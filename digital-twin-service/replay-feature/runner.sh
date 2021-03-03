@@ -1,0 +1,5 @@
+set -m
+
+python3 pub-robot-data.py $ZENOH_ROUTER_ADDRESS $DIGITAL_TWIN_ROS_TOPIC &
+python3 zenoh-replay.py $ZENOH_ROUTER_ADDRESS $REPLICA_ROS_TOPIC $REPLICA_HZ $REPLAY_DURATION
+fg %1

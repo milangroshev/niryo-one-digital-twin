@@ -1,0 +1,222 @@
+<?xml version="1.0"?>
+
+<!--
+    niryo_one.urdf.xacro
+    Copyright (C) 2017 Niryo
+    All rights reserved.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="niryo_one">
+	
+	<!-- Links -->
+
+    <link name="world"/>
+
+    <link name="base_link">
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry>
+                <mesh filename="package://niryo_one_description/meshes/v1/collada/base_link.dae" />
+			</geometry>
+			<material name="">
+				<color rgba="0.2 0.6 1 1" />
+			</material>
+        </visual>
+        <collision>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://niryo_one_description/meshes/v1/stl/base_link.stl" />
+            </geometry>
+        </collision>
+	</link>
+
+    <link name="shoulder_link">
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry>
+                <mesh filename="package://niryo_one_description/meshes/v1/collada/shoulder_link.dae" />
+			</geometry>
+			<material name="">
+				<color rgba="0.8 0.8 0.8 1" />
+			</material>
+		</visual>
+        <collision>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://niryo_one_description/meshes/v1/stl/shoulder_link.stl" />
+            </geometry>
+        </collision>
+	</link>
+
+    <link name="arm_link">
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry>
+                <mesh filename="package://niryo_one_description/meshes/v1/collada/arm_link.dae" />
+			</geometry>
+			<material name="">
+				<color rgba="0.2 0.6 1 1" />
+			</material>
+		</visual>
+        <collision>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://niryo_one_description/meshes/v1/stl/arm_link.stl" />
+            </geometry>
+        </collision>
+	</link>
+	
+    <link name="elbow_link">
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry>
+                <!--	<box size="0.1 0.1 0.048"/> -->
+                <mesh filename="package://niryo_one_description/meshes/v1/collada/elbow_link.dae" /> 
+			</geometry>
+			<material name="">
+				<color rgba="0.8 0.8 0.8 1" />
+			</material>
+		</visual>
+        <collision>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://niryo_one_description/meshes/v1/stl/elbow_link.stl" />
+            </geometry>
+        </collision>
+	</link>
+
+    <link name="forearm_link">
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry>
+                <mesh filename="package://niryo_one_description/meshes/v1/collada/forearm_link.dae" />
+			</geometry>
+			<material name="">
+				<color rgba="0.2 0.6 1 1" />
+			</material>
+		</visual>
+        <collision>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://niryo_one_description/meshes/v1/stl/forearm_link.stl" />
+            </geometry>
+        </collision>
+	</link>
+
+    <link name="wrist_link">
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry>
+                <mesh filename="package://niryo_one_description/meshes/v1/collada/wrist_link.dae" />
+			</geometry>
+			<material name="">
+				<color rgba="0.8 0.8 0.8 1" />
+			</material>
+		</visual>
+        <collision>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://niryo_one_description/meshes/v1/stl/wrist_link.stl" />
+            </geometry>
+        </collision>
+	</link>
+	
+    <link name="hand_link">
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry>
+                <mesh filename="package://niryo_one_description/meshes/v1/collada/hand_link.dae" />
+			</geometry>
+			<material name="">
+				<color rgba="0.6 0 0 1" />
+			</material>
+		</visual>
+        <collision>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://niryo_one_description/meshes/v1/stl/hand_link.stl" />
+            </geometry>
+        </collision>
+	</link>
+	
+    <link name="tool_link">
+	</link>
+
+
+	<!--Joints -->
+
+    <joint name="joint_world" type="fixed">
+        <parent link="world" />
+        <child link="base_link" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+
+	<joint name="joint_1" type="revolute">
+        <parent link="base_link" />
+        <child link="shoulder_link" />
+		<origin xyz="0 0 0.103" rpy="0 0 0" />
+		<axis xyz="0 0 1" />
+		<limit effort="1" velocity="1.0" lower="-3.05433" upper="3.05433" />
+	</joint>
+
+	<joint name="joint_2" type="revolute">
+        <parent link="shoulder_link" />
+        <child link="arm_link" />
+        <origin xyz="0 0 0.08" rpy="1.570796326795 -1.570796326795 0" />
+		<limit effort="1" velocity="1.0" lower="-1.570796326795" upper="0.628319" />
+		<axis xyz="0 0 1" />
+	</joint>
+
+	<joint name="joint_3" type="revolute">
+        <parent link="arm_link" />
+        <child link="elbow_link" />
+        <origin xyz="0.21004 0.0 0" rpy="0 0 -1.570796326795" />
+		<limit effort="1" velocity="1.0" lower="-1.401" upper="0.994838" />
+		<axis xyz="0 0 1" />	
+	</joint>
+
+	<joint name="joint_4" type="revolute">
+        <parent link="elbow_link" />
+        <child link="forearm_link" />
+        <origin xyz="0.037 0.032 0" rpy="0 1.570796326795 0" />
+		<limit effort="1" velocity="1.0" lower="-2.61799" upper="2.61799" />
+		<axis xyz="0 0 1" />
+	</joint>
+
+	<joint name="joint_5" type="revolute">
+        <parent link="forearm_link" />
+        <child link="wrist_link" />
+		<origin xyz="0 0 0.180" rpy="0 -1.570796326795 0" />
+		<limit effort="1" velocity="1.0" lower="-2.26893" upper="2.26893" />
+		<axis xyz="0 0 1" />
+	</joint>
+
+	<joint name="joint_6" type="revolute">
+        <parent link="wrist_link" />
+        <child link="hand_link" />
+        <origin xyz="0.018 0 0" rpy="0 1.570796326795 0" />
+		<limit effort="1" velocity="1.0" lower="-2.57" upper="2.57" />
+		<axis xyz="0 0 1" />
+	</joint>
+
+	<joint name="hand_tool_joint" type="fixed">
+        <parent link="hand_link" />
+        <child link="tool_link" />
+        <origin xyz="0 0 0.00" rpy="-1.570796326795 -1.570796326795 0" />
+	</joint>
+
+</robot>
+

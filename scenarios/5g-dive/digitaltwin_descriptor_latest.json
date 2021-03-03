@@ -1,0 +1,215 @@
+{
+    "name": "digitaltwin",
+    "verticalComponentWrappers": [
+        {
+            "name": "niryo-desktop",
+            "numReplicas": 1,
+            "imageRepository": "10.9.8.105:5000/niryo-one-drivers:1.0.0",
+            "maxWaitTime": 600,
+            "env": {
+                "ROS_MASTER_URI": "http://niryo-desktop:11311",
+                "ROS_IP": "$ComponentIP"
+            },
+            "componentAffinity": {
+                "location": "robot"
+            },
+            "devices": [
+                "/dev/gpiomem",
+                "/dev/spidev0.0",
+                "/dev/spidev0.1",
+                "/dev/serial0",
+                "/dev/serial1"
+            ]
+        },
+        {
+            "name": "niryo-one-control",
+            "numReplicas": 1,
+            "imageRepository": "10.9.8.105:5000/niryo-one-control:1.0.0",
+            "maxWaitTime": 600,
+            "env": {
+                "ROS_MASTER_URI": "http://niryo-desktop:11311",
+                "ROS_IP": "$ComponentIP"
+            },
+            "componentAffinity": {
+                "location": "edge",
+                "VNF": "vnf4"
+            },
+            "initContainers": [
+                {
+                    "name": "wait-desktop",
+                    "imageRepository": "ros:kinetic-ros-core",
+                    "shell": "bash",
+                    "command": "source /opt/ros/kinetic/setup.sh; nodes=0; until [[ $nodes == 1 ]] ; do echo waiting for niryo-desktop;nodes=$(rosnode list | grep niryo_one_driver | wc -l); sleep 2; done",
+                    "env": {
+                        "ROS_MASTER_URI": "http://niryo-desktop:11311",
+                        "ROS_IP": "$ComponentIP"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "niryo-one-motion",
+            "numReplicas": 1,
+            "imageRepository": "10.9.8.105:5000/niryo-one-motion:1.0.0",
+            "maxWaitTime": 600,
+            "env": {
+                "ROS_MASTER_URI": "http://niryo-desktop:11311",
+                "ROS_IP": "$ComponentIP"
+            },
+            "componentAffinity": {
+                "location": "edge",
+                "VNF": "vnf1"
+            },
+            "initContainers": [
+                {
+                    "name": "wait-control",
+                    "imageRepository": "ros:kinetic-ros-core",
+                    "shell": "bash",
+                    "command": "source /opt/ros/kinetic/setup.sh; nodes=0; until [[ $nodes == 1 ]] ; do echo waiting for niryo-one-control;nodes=$(rosnode list | grep robot_state_publisher | wc -l); sleep 2; done",
+                    "env": {
+                        "ROS_MASTER_URI": "http://niryo-desktop:11311",
+                        "ROS_IP": "$ComponentIP"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "niryo-one-interface",
+            "numReplicas": 1,
+            "imageRepository": "10.9.8.105:5000/niryo-one-interface:1.7",
+            "exposedPorts": [
+                9090
+            ],
+            "maxWaitTime": 600,
+            "env": {
+                "ROS_MASTER_URI": "http://niryo-desktop:11311",
+                "ROS_IP": "$ComponentIP"
+            },
+            "componentAffinity": {
+                "location": "fog"
+            },
+            "initContainers": [
+                {
+                    "name": "wait-motion",
+                    "imageRepository": "ros:kinetic-ros-core",
+                    "shell": "bash",
+                    "command": "source /opt/ros/kinetic/setup.sh; nodes=0; until [[ $nodes == 1 ]] ; do echo waiting for niryo-one-motion;nodes=$(rosnode list | grep move_group | wc -l); sleep 2; done; sleep 10",
+                    "env": {
+                        "ROS_MASTER_URI": "http://niryo-desktop:11311",
+                        "ROS_IP": "$ComponentIP"
+                    }
+                }
+            ],
+            "devices":[
+                "/dev/input/js0"
+            ]
+        },
+        {
+            "name": "dtwin",
+            "numReplicas": 1,
+            "imageRepository": "10.9.8.105:5000/niryo-one-dtwin:1.2",
+            "exposedPorts": [
+                5901,
+                6901
+            ],
+            "maxWaitTime": 600,
+            "env": {
+                "ROS_MASTER_URI": "http://niryo-desktop:11311",
+                "ROS_IP": "$ComponentIP"
+            },
+            "componentAffinity": {
+                "location": "edge",
+                "VNF": "vnf3"
+            },
+            "initContainers": [
+                {
+                    "name": "wait-desktop",
+                    "imageRepository": "ros:kinetic-ros-core",
+                    "shell": "bash",
+                    "command": "source /opt/ros/kinetic/setup.sh; nodes=0; until [[ $nodes == 1 ]] ; do echo waiting for niryo-desktop;nodes=$(rosnode list | grep niryo_one_driver | wc -l); sleep 2; done",
+                    "env": {
+                        "ROS_MASTER_URI": "http://niryo-desktop:11311",
+                        "ROS_IP": "$ComponentIP"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "dtwin-web",
+            "numReplicas": 1,
+            "imageRepository": "10.9.8.105:5000/niryo-one-web:1.21",
+            "exposedPorts": [
+                8080
+            ],
+            "maxWaitTime": 600,
+            "env": {
+                "ROS_MASTER_URI": "http://niryo-desktop:11311",
+                "ROS_IP": "$ComponentIP"
+            },
+            "componentAffinity": {
+                "location": "edge",
+                "VNF": "vnf1"
+            },
+            "initContainers": [
+                {
+                    "name": "wait-dtwin",
+                    "imageRepository": "ros:kinetic-ros-core",
+                    "shell": "bash",
+                    "command": "source /opt/ros/kinetic/setup.sh; nodes=0; until [[ $nodes == 1 ]] ; do echo waiting for dtwin;nodes=$(rosnode list | grep user_interface | wc -l); sleep 2; done",
+                    "env": {
+                        "ROS_MASTER_URI": "http://niryo-desktop:11311",
+                        "ROS_IP": "$ComponentIP"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "zenoh-router",
+            "numReplicas": 1,
+            "imageRepository": "10.9.8.105:5000/eclipse/zenoh:1.0",
+            "maxWaitTime": 600,
+            "env": {
+                "RUST_LOG": "debug--init"
+            },
+            "componentAffinity": {
+                "location": "edge",
+                "VNF": "vnf4"
+            }
+        },
+        {
+            "name": "zenoh-replay",
+            "numReplicas": 1,
+            "imageRepository": "10.9.8.105:5000/zenoh-replay:1.1",
+            "maxWaitTime": 600,
+            "env": {
+                "ROS_MASTER_URI": "http://niryo-desktop:11311",
+                "ROS_IP": "$ComponentIP",
+                "ZENOH_ROUTER_ADDRESS": "tcp/zenoh-router:7447",
+                "DIGITAL_TWIN_ROS_TOPIC": "/coppeliaSIM/NiryoOne/joint_states",
+                "REPLICA_ROS_TOPIC": "/replay/joint_states"
+            },
+            "componentAffinity": {
+                "location": "edge",
+                "VNF": "vnf2"
+            },
+            "initContainers": [
+                {
+                    "name": "wait-desktop",
+                    "imageRepository": "ros:kinetic-ros-core",
+                    "shell": "bash",
+                    "command": "source /opt/ros/kinetic/setup.sh; until rosnode machine dtwin; do echo waiting for dtwin; sleep 2; done",
+                    "env": {
+                        "ROS_MASTER_URI": "http://niryo-desktop:11311",
+                        "ROS_IP": "$ComponentIP"
+                    }
+                },
+                {
+                    "name": "wait-zenoh-replay",
+                    "imageRepository": "curlimages/curl:7.73.0",
+                    "shell": "sh",
+                    "command": "until curl --fail --connect-timeout 5 http://zenoh-router:8000/@/; do sleep 2; done"
+                }
+            ]
+        }
+    ]
+}

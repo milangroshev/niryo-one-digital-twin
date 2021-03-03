@@ -1,0 +1,5 @@
+<launch>
+
+<include file="$(find niryo_one_bringup)/launch/twin_controllers.launch"/>
+
+</launch>

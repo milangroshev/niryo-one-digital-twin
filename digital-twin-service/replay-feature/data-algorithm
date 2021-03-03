@@ -1,0 +1,39 @@
+20ms - robot sensor data
+50 samples / s
+
+60 seconds => 3000
+
+/mystorage/sample/0 => value
+/mystorage/sample/1
+/mystorage/sample/2
+...
+/mystorage/sample/3000
+
+
+idx => current sample id
+
+// Receive data from the robot
+write(/mystorage/sample/cid, value)
+cid = (cid + 1) % 3000
+
+// First robot => store data
+get(/mystorage/sample/*)
+
+
+in case you can also structure thinkgs like
+
+/mystorage/<minute ID>/<sample ID>
+
+to get things for minute
+
+or per slot of seconds, etc.
+
+/mystorage/<minute ID>/<second ID>/<sample ID>/value
+
+
+to get everything in the last minute /mystorage/current minut/*/*
+
+
+parse the data line by line
+publish on new ros topic on every 20ms (create your own tocpi /replay/twin)
+subscirbe to this topic in CoppeliaSIM
