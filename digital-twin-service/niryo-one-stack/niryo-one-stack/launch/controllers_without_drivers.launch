@@ -1,0 +1,23 @@
+<launch>
+
+    <!-- set to true if you want to launch ROS on your computer 
+        - controller will just echo position command
+        - all hardware relative stuff is deactivated            -->
+    <arg name="simulation_mode" default="false" />
+    <!-- set to true to disable hardware communication for CAN bus (Niryo Steppers)
+     or DXl bus (DEBUG PURPOSES) -->
+    <arg name="disable_can_for_debug" default="false" />
+    <arg name="disable_dxl_for_debug" default="false" />
+
+
+    <!-- Load controller settings -->
+    <rosparam file="$(find niryo_one_driver)/config/niryo_one_controllers.yaml" command="load"/>
+  
+    <!-- spawn controllers -->
+    <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" 
+        args="joint_state_controller niryo_one_follow_joint_trajectory_controller
+        --shutdown-timeout 1"/>
+
+    <!-- robot state publisher -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen" />
+</launch>
