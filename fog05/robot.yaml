@@ -9,7 +9,7 @@
       ram_size_mb: 10
       storage_size_mb: 1
   migration_kind : COLD
-  hypervisor_specific : "{\"cmd\":\"/home/niryo/fog05/robot_start.sh\",\"args\":[],\"env\":{}}"
+  hypervisor_specific : "{\"cmd\":\"/home/niryo/repos/niryo-one-digital-twin/fog05/robot_start.sh\",\"args\":[],\"env\":{}}"
   interfaces : []
   storage: []
   connection_points: []
