@@ -4,7 +4,7 @@ source /home/niryo/catkin_ws/devel/setup.bash
 
 
 echo "=== Launch Robot Drivers ==="
-roslaunch niryo_one_bringup sim_robot_drivers.launch __master:=http://163.117.140.254:11311 &
+roslaunch niryo_one_bringup start_sim_robot_drivers.launch __master:=http://10.9.16.213:11311 &
 ROS_PID=$!
 
 echo "=== Robot Drivers PID: ${ROS_PID} ==="
