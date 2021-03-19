@@ -7,12 +7,13 @@ echo 'Remember that you need to list and add your xauth keys into the Dockerfile
 #ROS_IP="169.254.210.1"
 
 sudo docker run \
-                --hostname niryo-one-motion \
+                --hostname niryo-one-dtwin \
 		-it \
-		--name motion \
+		--name dtwin \
 		--rm \
-		-d \
 		--net host \
+		-p 6901:6901 \
+		-p 5901:5901 \
 		-e ROS_MASTER_URI="http://10.5.98.108:11311" \
 		--add-host sim-robot:10.5.98.5 \
 		--add-host niryo-one-master:10.5.98.108 \
@@ -21,7 +22,7 @@ sudo docker run \
 		--add-host niryo-one-interface:10.5.98.108 \
 		--add-host niryo-one-dtwin:10.5.98.108 \
 		--add-host niryo-one-stack:10.5.98.108 \
-		niryo-one-motion:latest
+		niryo-one-dtwin:latest
 
 # Networking settings phisical robot
 #sudo docker run \

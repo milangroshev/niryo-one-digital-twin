@@ -102,6 +102,10 @@ RUN $INST_SCRIPTS/libnss_wrapper.sh
 ADD ./VNCconf/scripts $STARTUPDIR
 RUN $INST_SCRIPTS/set_user_permission.sh $STARTUPDIR $HOME
 ADD run_coppelia.sh /headless/Desktop/
+RUN chmod +x /headless/Desktop/run_coppelia.sh
+#if ERROR: Compiled with the flag for AVX but not supported by the CPU.
+RUN rm /home/dtwin/CoppeliaSim_Pro_V4_1_0_Ubuntu16_04/libsimExtDynamicsVortex.so
+
 USER 1000
 
 ENTRYPOINT ["/dockerstartup/vnc_startup.sh"]
