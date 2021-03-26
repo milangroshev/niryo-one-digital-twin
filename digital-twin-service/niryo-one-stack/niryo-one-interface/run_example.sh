@@ -11,6 +11,7 @@ sudo docker run \
 		-it \
 		--name interface \
 		--rm \
+		-d \
 		--net host \
 		-e ROS_MASTER_URI="http://10.5.98.108:11311" \
 		--add-host sim-robot:10.5.98.5 \

@@ -1,14 +1,16 @@
 #!/bin/bash
 
 # Localhost Networking settings
-ROS_MASTER_URI="http://127.0.0.1:11311"
-ROS_IP="127.0.0.1"
+ROS_MASTER_URI="http://10.5.98.108:11311"
+ROS_IP="10.5.98.108"
 
 # Networking settings simulated robot
 sudo docker run \
        --hostname niryo-one-web \
        --rm \
+       -d \
        --net=host \
+       --name web-interface \
        -e ROS_MASTER_URI=$ROS_MASTER_URI \
        -e ROS_IP=$ROS_IP \
        --add-host sim-robot:10.5.98.5 \

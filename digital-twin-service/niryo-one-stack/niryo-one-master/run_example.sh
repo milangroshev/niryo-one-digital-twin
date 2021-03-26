@@ -10,7 +10,7 @@ sudo docker run \
                 --hostname niryo-one-master \
                 -it \
                 --name master \
-                --rmi \
+                --rm \
                 -d \
                 --net host \
                 -e ROS_MASTER_URI="http://10.5.98.108:11311" \
