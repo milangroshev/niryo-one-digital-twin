@@ -1,4 +1,4 @@
-# ROS kinetic docker deployment to run ROS on Ubuntu16_04.
+# ROS melodic docker deployment to run Niryo One ROS stack. The stack includes Control, Motion Planning and Interface Layer
 FROM ros:melodic
 MAINTAINER mgroshev@pa.uc3m.es
 

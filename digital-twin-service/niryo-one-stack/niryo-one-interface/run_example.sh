@@ -14,12 +14,14 @@ sudo docker run \
 		--net host \
 		-e ROS_MASTER_URI="http://10.5.98.108:11311" \
 		--add-host sim-robot:10.5.98.5 \
-		--add-host niryo-one-master:10.5.98.108 \
-		--add-host niryo-one-control:10.5.98.108 \
-		--add-host niryo-one-motion:10.5.98.108 \
-		--add-host niryo-one-interface:10.5.98.108 \
-		--add-host niryo-one-dtwin:10.5.98.108 \
-		--add-host niryo-one-stack:10.5.98.108 \
+                --add-host niryo-one-master:10.5.98.108 \
+                --add-host niryo-sim-drivers:10.5.98.108 \
+                --add-host niryo-one-web:10.5.98.108 \
+                --add-host niryo-one-control:10.5.98.108 \
+                --add-host niryo-one-motion:10.5.98.108 \
+                --add-host niryo-one-interface:10.5.98.108 \
+                --add-host niryo-one-dtwin:10.5.98.108 \
+                --add-host niryo-one-stack:10.5.98.108 \
 		niryo-one-interface:latest
 
 # Networking settings phisical robot
