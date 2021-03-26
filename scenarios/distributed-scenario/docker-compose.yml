@@ -28,9 +28,9 @@ x-ros-config: &ros-config
     - ROS_IP=127.0.0.1
 services:
   master:
-    image: niryo-one-master:latest
+    image: niryo-ros-master:latest
     hostname: niryo-one-master
-    # build:
+    #build:
     environment: *ros-config
     extra_hosts: *hosts
     networks:
@@ -54,6 +54,7 @@ services:
     networks:
       - digital-twin-service
     depends_on:
+      - master
       - drivers
   motion:
     image: niryo-one-motion:latest
@@ -94,6 +95,8 @@ services:
     # build:
     environment: *ros-config
     extra_hosts: *hosts
+    ports:
+      - 8080:8080
     networks:
       - digital-twin-service
     depends_on:

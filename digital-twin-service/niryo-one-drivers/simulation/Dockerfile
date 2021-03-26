@@ -28,4 +28,4 @@ COPY launch/* catkin_ws/src/niryo_one_bringup/launch/
 
 RUN cd catkin_ws && bash -c "source /opt/ros/melodic/setup.bash && catkin_make"
 
-CMD bash -c "source /opt/ros/melodic/setup.bash && source catkin_ws/devel/setup.bash && roslaunch niryo_one_bringup sim_robot_drivers.launch"
+CMD bash -c "source /opt/ros/melodic/setup.bash && source catkin_ws/devel/setup.bash && roslaunch niryo_one_bringup sim_robot_drivers.launch --wait"
