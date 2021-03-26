@@ -9,6 +9,7 @@ RUN useradd -ms /bin/bash niryo
 RUN \
   apt-get update && \
   apt-get install -y lsof && \
+  apt-get install -y vim && \
   apt-get install -y python-rosinstall python-rosinstall-generator && \
   apt-get install -y python-wstool build-essential python-pip xauth && \
   apt-get install -y ros-melodic-robot-state-publisher \
@@ -26,7 +27,14 @@ RUN rosdep update && \
     git clone https://github.com/NiryoRobotics/niryo_one_ros.git .
 
 COPY launch/* catkin_ws/src/niryo_one_bringup/launch/
+RUN mkdir -p /home/niryo/scripts
+COPY scripts/* /home/niryo/scripts/
 
 RUN cd catkin_ws && bash -c "source /opt/ros/melodic/setup.bash && catkin_make"
+WORKDIR /home/niryo/scripts/
+USER root
+RUN chmod +755 wait-for-ros-nodes.sh
+USER niryo
+#RUN wait-for-ros-nodes.sh
 
-CMD bash -c "source /opt/ros/melodic/setup.bash && source catkin_ws/devel/setup.bash && roslaunch niryo_one_bringup stack_simulation.launch"
+CMD bash -c "./wait-for-ros-nodes.sh"

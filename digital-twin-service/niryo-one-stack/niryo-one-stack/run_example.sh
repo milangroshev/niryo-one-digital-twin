@@ -12,7 +12,6 @@ sudo docker run \
                 -it \
                 --name niryo-stack \
                 --rm \
-                -d \
                 --net host \
                 -e ROS_MASTER_URI="http://127.0.0.1:11311" \
                 --add-host sim-robot:10.5.98.5 \
