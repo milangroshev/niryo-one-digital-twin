@@ -1,0 +1,116 @@
+version: "3.8"
+networks:
+  digital-twin-service:
+    driver: bridge
+  # robot_eth_macvlan:
+  #  driver: macvlan
+  #  driver_opts:
+  #    parent: enp0s3
+  #  ipam:
+  #    config:
+  #      - subnet: 10.0.2.0/24
+  #      - ip_range: 10.0.2.192/27
+  #      - aux_address: host=10.0.2.223
+
+  # network:
+  #    robot_eth_macvlan:
+  #    ipv4_address: 169.254.210.1
+x-hosts: &hosts
+    - niryo-one-master:127.0.0.1
+    - niryo-sim-drivers:127.0.0.1
+    - niryo-one-web:127.0.0.1
+    - niryo-one-control:127.0.0.1
+    - niryo-one-motion:127.0.0.1
+    - niryo-one-interface:127.0.0.1
+    - niryo-one-dtwin:127.0.0.1
+x-ros-config: &ros-config
+    - ROS_MASTER_URI=http://127.0.0.1:11311
+    - ROS_IP=127.0.0.1
+services:
+  master:
+    image: niryo-one-master:latest
+    hostname: niryo-one-master
+    # build:
+    environment: *ros-config
+    extra_hosts: *hosts
+    networks:
+      - digital-twin-service
+  drivers:
+    image: niryo-sim-drivers:latest
+    hostname: niryo-sim-drivers
+    # build:
+    environment: *ros-config
+    extra_hosts: *hosts
+    networks:
+      - digital-twin-service
+    depends_on:
+      - master
+  control:
+    image: niryo-one-control:latest
+    hostname: niryo-one-control
+    # build:
+    environment: *ros-config
+    extra_hosts: *hosts
+    networks:
+      - digital-twin-service
+    depends_on:
+      - drivers
+  motion:
+    image: niryo-one-motion:latest
+    hostname: niryo-one-motion
+    # build:
+    environment: *ros-config
+    extra_hosts: *hosts
+    networks:
+      - digital-twin-service
+    depends_on:
+      - control
+  interface:
+    image: niryo-one-interface:latest
+    hostname: niryo-one-interface
+    # build:
+    environment: *ros-config
+    extra_hosts: *hosts
+    networks:
+      - digital-twin-service
+    depends_on:
+      - motion
+  dtwin:
+    image: niryo-one-dtwin:latest
+    hostname: niryo-one-dtwin
+    # build:
+    environment: *ros-config
+    extra_hosts: *hosts
+    ports:
+      - 6901:6901
+      - 5901:5901
+    networks:
+      - digital-twin-service
+    depends_on:
+      - interface
+  web:
+    image: niryo-one-web:latest
+    hostname: niryo-one-web
+    # build:
+    environment: *ros-config
+    extra_hosts: *hosts
+    networks:
+      - digital-twin-service
+    depends_on:
+      - dtwin
+# zenoh-router:
+#    image:
+#    name:
+#    ports:
+#      - 7447:7447/tcp
+#      - 7447:7447/udp
+#      - 8000:8000/tcp
+#    network: 169.254.210.7
+#  replay:
+#    image:
+#    build:
+#    env_file:
+#      - replay.env
+#    ports:
+#     - 5000:5000
+#    extra_hosts: *hosts
