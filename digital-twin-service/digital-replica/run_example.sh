@@ -17,6 +17,7 @@ sudo docker run \
 		-p 5901:5901 \
 		-e ROS_MASTER_URI="http://127.0.0.1:11311" \
 		--add-host sim-robot:10.5.98.5 \
+		--add-host niryo-one-sim:127.0.0.1 \
 		--add-host niryo-one-master:127.0.0.1 \
                 --add-host niryo-sim-drivers:127.0.0.1 \
                 --add-host niryo-one-web:127.0.0.1 \

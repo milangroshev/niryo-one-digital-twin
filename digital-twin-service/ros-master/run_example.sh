@@ -23,7 +23,7 @@ sudo docker run \
                 --add-host niryo-one-interface:127.0.0.1 \
                 --add-host niryo-one-dtwin:127.0.0.1 \
                 --add-host niryo-one-stack:127.0.0.1 \
-                niryo-one-master:latest
+                niryo-ros-master:latest
 
 # Networking settings phisical robot
 #sudo docker run \

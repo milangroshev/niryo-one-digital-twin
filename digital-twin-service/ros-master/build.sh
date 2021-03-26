@@ -4,4 +4,4 @@ echo 'Remember that you need to list and add your xauth keys into the Dockerfile
 
 
 
-sudo docker build . -t niryo-one-master
+sudo docker build . -t niryo-ros-master
