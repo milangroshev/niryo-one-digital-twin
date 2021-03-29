@@ -6,7 +6,7 @@ This repository contains the files to run a Niryo One control layer in docker co
 
 ## What does this container do?
 
-This container runs the `niryo_one_driver` and `niryo_one_tools` ROS nodes
+This container runs the `controller_spawner` and `robot_state_publisher` ROS nodes
 
 ## Run it  
 
