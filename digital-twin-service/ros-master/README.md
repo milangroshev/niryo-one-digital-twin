@@ -19,7 +19,7 @@ This container runs `roscore`
 - `sudo ./build.sh`
 - note: It will take some time to build the image because we have to assemble a ROS melodic image.
 
-### This will build the `master` docker image. Verify that the image is present by running:
+### This will build the `niryo-ros-master` docker image. Verify that the image is present by running:
 - `sudo docker image ls`
 
 ### Docker run example
