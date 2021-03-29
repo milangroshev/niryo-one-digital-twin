@@ -30,34 +30,11 @@ simulator.
  - Install Docker Compose (tutorial [here](https://docs.docker.com/compose/install/))
  - Clone this git repo 
  
- ### Run Digital Twin app (with a simulated Nyrio One robot instance)
- - Launch the Niryo One ROS Stack for a single simulated instance
-   - Before launching the container you need to set the IP address of the CoppeliaSim and controller containers
-   - Launch Niryo One simulation container (tutorial [here](./niryo-one-sim/full-stack/README.md))
-   - A visual representation of the simulated robot will be launched in RViz
-
- - Launch CoppeliaSim container (tutorial [here](./digital-twin-app/coppeliasim-container/README.md))
-   - Before launching the container you need to set the IP address of the Niryo One simulation container
-   - A visual representation of the CoppeliaSim will be launched
-
- - Launch the Controller and Calibration container (tutorial [here](./digital-twin-app/controller-and-calibration-container/README.md))
-   - Before launching the container you need to set the IP address of the Niryo One simulation container
-
- - At this point, you should see, in both the RViz and the CoppeliaSim,
-   the Niryo One representation executing a set of movements
-   fully synchronized.
+ ### Run Digital Twin service
+ - The scenario folder is composed of different deployment options for the Digital Twin service.
+  - single host scenarios (tutorial [here](https://docs.docker.com/engine/install/ubuntu/))
+  - multiple hosts scenarios (tutorial [here](https://docs.docker.com/engine/install/ubuntu/))
  
- ### Run Digital Twin app (with a physical Nyrio One robot)
- - Start the phisical Niryo One robot
- - Connect Niryo One Studio and Calibrate the robot
- - Synchronize the clocks between the robot and the remote machine using ptpd
-    - Install ptpd: ```sudo apt install ptpd```
-    - On the robot: ```sudo ptpd -s -V -i <interface_name>```
-    - On the remote machine: ```sudo ptpd -V -i wlp2s0 -m```
- - Launch Digital twin container (tutorial [here](./digital-twin-app/coppeliasim-container/README.md))
-    - As the robot is a different machine, you will need to configure the ROS_IP, the ROS_MASTER, and setup the host IPs for the Niryo One phisical robot and the Digital twin container inside the script ./run_container.
- - From Niryo One studio disable the learning mode and your robot is ready to be controled
-
 ## DISCLAIMER
 The modules provided in this repository are distributed in the hope that they
 will be useful, but WITHOUT ANY WARRANTY;
