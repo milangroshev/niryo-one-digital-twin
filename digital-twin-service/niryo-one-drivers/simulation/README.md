@@ -1,29 +1,31 @@
-# Niryo One Simulator
+# Niryo One simulated drivers
 
 ## What is it?
 
-This repository contains the code to lauch a Niryo One robot simulated drivers only in docker container. 
+This repository contains the files to run a Niryo One simulated drivers as docker container. 
 
-## Run it
+## Run it  
 
-You will need to setup the host IPs for the niryo-one-control, niryo-one-motion and niryo-one-interface inside the script `./run_container` based on your local configuration.
-In addition, you will need to set up a static ip addres for the driver simulation container (--ip) from the subnet of the macvlan docker network that you created. Also the ROS_MASTER_URI and the ROS_IP need to be set up.  
+### Dependencies:
+- The Niryo One simulated drivers depend on:
+    - master
+note: be sure that all the dependencies are running before you run the Niryo One simulated drivers container
 
-In our run_container.sh example:
-  - the container static ip: ```**--ip=10.0.2.193**``` ```**-e ROS_MASTER_URI=10.0.2.193**``` ```**-e ROS_IP=10.0.2.193**``` 
-  - the niryo-one-control static ip: ```**--add-host niryo-one-control:10.0.2.194**``` 
-  - the niryo-one-motion static ip: ```**--add-host niryo-one-motion:10.0.2.195**```
-  - the niryo-one-interface static ip: ```**--add-host niryo-one-interface:10.0.2.196**```   
+### First you will need to build the container. In order to do that, run the build.sh script as sudo:
+- `sudo ./build.sh`
+- note: It will take some time to build the image because we have to assemble a ROS melodic image, install the Niryo One dependencies and install the Niryo One ROS  
 
-Once you have done that, install Docker in your machine and execute the `./run_container` script.
+### This will build the `niryo-sim-drivers` docker image. Verify that the image is present by running:
+- `sudo docker image ls`
 
-Since Niryo One ROS is optimized for ROS Kinetic we recomend that your docker host is on Ubuntun 16.04.
+### Docker run example
+In this folder we also provide a docker run example. 
 
-It will take some time to setup because we have to assemble a ROS kinetic image. 
+The run_example.sh is optimized to running the Digital Twin service on a single host. For that reason it uses the docker host network and all the remaning modules (e.g., master, control, motion planning ) of the Digital Twin service are added on 127.0.0.1.
 
+To run the simulated drivers:
+- `sudo ./run_example.sh`
+- Verify that the container is up and running:
+    - `sudo docker ps` - in the output you should be able to see the sim-drivers container up and running
 
-note: If you decide to distribute the Niryo One ROS stack between different phisical machines, you will need to synchronize the clocks. This can be done very efficiently by setting a ptpd master on one docker host and connecting the other phisical machines like clients.  
-
-`ptpd -V -m -i <interface> # Start a ptpd master.`
-`ptpd -V -s -i <interface> # Start a ptpd slave.`
 
