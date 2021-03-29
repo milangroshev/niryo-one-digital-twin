@@ -1,4 +1,4 @@
-# Niryo One simulated drivers
+# Niryo One Simulated Drivers
 
 ## What is it?
 
