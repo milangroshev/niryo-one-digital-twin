@@ -15,7 +15,7 @@ The Niryo One ROS stack modules can be deployed in the robot or in the Edge of t
 This repo provides two options to run the Niryo One ROS stack:
 - Distributed, where each module is separate container:
     - Control: (tutorial [here](./niryo-one-control/README.md)).
-    - Motion Planning: (tutorial [here](./digital-twin-service/niryo-one-stack/niryo-one-motion/README.md)).
+    - Motion Planning: (tutorial [here](./digital-twin-service/niryo-one-stack/niryo-one-motion/)).
     - Interface: (tutorial [here](./digital-twin-service/niryo-one-stack/niryo-one-interface/README.md)).
 - Centralized, where all the modules are in single container (tutorial [here](./digital-twin-service/niryo-one-stack/niryo-one-stack/README.md)).
 
