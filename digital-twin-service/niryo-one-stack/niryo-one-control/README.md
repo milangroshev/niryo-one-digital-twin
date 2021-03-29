@@ -16,7 +16,7 @@ It will bring up the `joint_state_controller` and `niryo_one_follow_joint_trajec
     - master (tutorial [here](../../ros-master/)).
     - sim-drivers (tutorial [here](../../niryo-one-drivers/simulation/)).
  
-note: be sure that all the dependencies are running before you run the Niryo One simulated drivers container
+note: be sure that all the dependencies are running before you run the Niryo One Control container
 
 ### First you will need to build the container. In order to do that, run the build.sh script as sudo:
 - `sudo ./build.sh`
