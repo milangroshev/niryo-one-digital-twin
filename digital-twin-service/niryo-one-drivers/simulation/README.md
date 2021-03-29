@@ -9,6 +9,7 @@ This repository contains the files to run a Niryo One simulated drivers as docke
 ### Dependencies:
 - The Niryo One simulated drivers depend on:
     - master
+ 
 note: be sure that all the dependencies are running before you run the Niryo One simulated drivers container
 
 ### First you will need to build the container. In order to do that, run the build.sh script as sudo:
