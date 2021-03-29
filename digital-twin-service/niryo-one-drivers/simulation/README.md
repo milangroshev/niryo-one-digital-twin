@@ -4,6 +4,10 @@
 
 This repository contains the files to run a Niryo One simulated drivers as docker container. 
 
+## What does this container do?
+
+This container runs the `niryo_one_driver` and `niryo_one_tools` ROS nodes
+
 ## Run it  
 
 ### Dependencies:
