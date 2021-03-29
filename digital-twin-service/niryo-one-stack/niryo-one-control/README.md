@@ -13,8 +13,8 @@ It will bring up the `joint_state_controller` and `niryo_one_follow_joint_trajec
 
 ### Dependencies:
 - The Niryo One simulated drivers depend on:
-    - master (tutorial [here](../../niryo-one-drivers/simulation/)).
-    - sim-drivers
+    - master (tutorial [here](../../ros-master/)).
+    - sim-drivers (tutorial [here](../../niryo-one-drivers/simulation/)).
  
 note: be sure that all the dependencies are running before you run the Niryo One simulated drivers container
 
