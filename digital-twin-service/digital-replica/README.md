@@ -1,8 +1,8 @@
-# Niryo One ROS controlled simulation. 
+# Niryo One Digital Twin. 
 
 ## What is this?
 
-This repository contains the necessary files to deploy and execute a Niryo One digital twin application. 
+This repository contains the necessary files to run the Niryo One Digital Twin replica. 
 
 The digital twin monitors the state of a Niryo One robot using ROS topics, specifically the /joint_states and the /joy topics using the ROS interface for CoppeliaSim. 
 
@@ -12,32 +12,49 @@ The simulation allows the retrieval of the torque exerted per joint, which could
 
 In addition to this, the model serves to the network the simulation time in seconds and the state of the gripper, which is limited to the larger one. 
 
-## How to use it?
+## What does this container do?
 
-First of all, you will need to have a ROS network operational with a well known host as ROS_MASTER. 
+This container runs CoppeliaSim with the ROS interface in a VNC container
 
-Then you will need to configure the `run_container.sh` script with the IP of the ROS_MASTER if it cannot be resolved and other hostnames that have to be included in the `/etc/hosts` file. 
+## Run it?
 
-Any machine that will make use of the services of this digital twin on the ROS network needs to be resolvable, either via DNS or `/etc/hosts`.  
+### Dependencies:
+- The Niryo One Digital Twin depend on:
+    - master (tutorial [here](../../ros-master/)).
+    - sim-drivers (tutorial [here](../../niryo-one-drivers/simulation/)).
+    - control (tutorial [here](../niryo-one-stack/niryo-one-control/)).
+    - motion (tutorial [here](../niryo-one-stack/niryo-one-motion/)).
+    - interface (tutorial [here](../niryo-one-stack/niryo-one-interface/)).
 
-[Example of ROS network](network_diagram.png)
+note: instead of running each module separatly (control, motion, interface) you can run the Niryo One Stack in a single container (tutorial [here](../niryo-one-stack/niryo-one-stack/)).
+ 
+note: be sure that all the dependencies are running before you run the Niryo One Digital Twin container
 
-An example of a network setup, used with in hostpot mode with the Niryo One is the one of the included image. 
+### First you will need to build the container. In order to do that, run the build.sh script as sudo:
+- `sudo ./build.sh`
+- note: It will take some time to build the image because we have to assemble a ROS melodic image, install the Niryo One dependencies and install the Niryo One ROS  
 
-The you will need an Internet connection on your host machine to build the image. 
-If this is handled, then just execute `run_container.sh` and wait until CoppeliaSim appears on your desktop environment. 
+### This will build the `niryo-one-dtwin` docker image. Verify that the image is present by running:
+- `sudo docker image ls`
 
-This script will do essentially three things:
-1. It will build your Docker image. 
-2. It will forward X11 from the container to your host machine. 
-3. It will run a container with the latest image in sharing your host's networking namespace.  
+### Docker run example
+In this folder we also provide a docker run example. 
 
-An important note is that in order for the GUI to appear, your system needs to support X11 forwarding. 
+The run_example.sh is optimized to running the Digital Twin service on a single host. For that reason it uses the docker host network and all the remaning modules (e.g., master, control, motion planning ) of the Digital Twin service are added on 127.0.0.1.
 
-Once CoppeliaSim is up and running, review the logs to verify that the ROS interface has been loaded during initialization. If you see an error it most likely means that your ROS_MASTER cannot be reached. 
+To run the Niryo One Digital Twin:
+- `sudo ./run_example.sh`
+- Verify that the container is up and running:
+    - `sudo docker ps` - in the output you should be able to see the `dtwin` container up and running
 
-Run the simulation and adapt the speed accordingly to achieve realtime feedback.
+### How to use it?
 
-If you find errors at this point, it is likely that something is failing with the connection to the robot or the control node. 
+- Open your browser and navigate to <host_machine_ip_address:6901>
+- Insert as password: netcom;
+- Once the GUI is available double click the desktop script `run_coppelia.sh`
+- This will open CoppeliaSim. Once you are inside:
+    - press the play button
+    - and click twice on the + icon of the GUI
+ -You should see the Niryo One digital Replica going in a down
+ -To verify that the Digital Twin service works correctly run the web interface (tutorial [here](../web-interface/)).
 
-Check out [my other repository](https://github.com/jairomer/niryo-one-simulation-controller) if you want to execute the integration tests for the digital twin. 
