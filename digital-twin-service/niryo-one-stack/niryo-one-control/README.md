@@ -6,13 +6,15 @@ This repository contains the files to run a Niryo One control layer in docker co
 
 ## What does this container do?
 
-This container runs the `controller_spawner` and `robot_state_publisher` ROS nodes
+This container runs the `controller_spawner` and `robot_state_publisher` ROS nodes. 
+It will bring up the `joint_state_controller` and `niryo_one_follow_joint_trajectory_controller`
 
 ## Run it  
 
 ### Dependencies:
 - The Niryo One simulated drivers depend on:
-    - master
+    - master (tutorial [here](../../niryo-one-drivers/simulation/)).
+    - sim-drivers
  
 note: be sure that all the dependencies are running before you run the Niryo One simulated drivers container
 
