@@ -31,6 +31,6 @@ The run_example.sh is optimized to running the Digital Twin service on a single 
 To run the simulated drivers:
 - `sudo ./run_example.sh`
 - Verify that the container is up and running:
-    - `sudo docker ps` - in the output you should be able to see the sim-drivers container up and running
+    - `sudo docker ps` - in the output you should be able to see the `sim-drivers` container up and running
 
 
