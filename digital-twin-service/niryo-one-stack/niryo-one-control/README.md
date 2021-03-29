@@ -30,7 +30,7 @@ In this folder we also provide a docker run example.
 
 The run_example.sh is optimized to running the Digital Twin service on a single host. For that reason it uses the docker host network and all the remaning modules (e.g., master, control, motion planning ) of the Digital Twin service are added on 127.0.0.1.
 
-To run the simulated drivers:
+To run the Niryo One Control:
 - `sudo ./run_example.sh`
 - Verify that the container is up and running:
     - `sudo docker ps` - in the output you should be able to see the `control` container up and running
