@@ -32,8 +32,8 @@ simulator.
  
  ### Run Digital Twin service
  - The scenario folder is composed of different deployment options for the Digital Twin service.
-  - single host scenarios (tutorial [here](https://docs.docker.com/engine/install/ubuntu/))
-  - multiple hosts scenarios (tutorial [here](https://docs.docker.com/engine/install/ubuntu/))
+    - single host scenarios (tutorial [here](https://docs.docker.com/engine/install/ubuntu/))
+    - multiple hosts scenarios (tutorial [here](https://docs.docker.com/engine/install/ubuntu/))
  
 ## DISCLAIMER
 The modules provided in this repository are distributed in the hope that they
