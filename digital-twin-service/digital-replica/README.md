@@ -55,6 +55,6 @@ To run the Niryo One Digital Twin:
 - This will open CoppeliaSim. Once you are inside:
     - press the play button
     - and click twice on the + icon of the GUI
- -You should see the Niryo One digital Replica going in a down
- -To verify that the Digital Twin service works correctly run the web interface (tutorial [here](../web-interface/)).
+- You should see the Niryo One digital Replica going in a down
+- To verify that the Digital Twin service works correctly run the web interface (tutorial [here](../web-interface/)).
 
