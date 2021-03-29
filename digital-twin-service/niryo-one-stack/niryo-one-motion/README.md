@@ -22,7 +22,7 @@ note: be sure that all the dependencies are running before you run the Niryo One
 - `sudo ./build.sh`
 - note: It will take some time to build the image because we have to assemble a ROS melodic image, install the Niryo One dependencies and install the Niryo One ROS  
 
-### This will build the `niryo-one-control` docker image. Verify that the image is present by running:
+### This will build the `niryo-one-motion` docker image. Verify that the image is present by running:
 - `sudo docker image ls`
 
 ### Docker run example
@@ -30,7 +30,7 @@ In this folder we also provide a docker run example.
 
 The run_example.sh is optimized to running the Digital Twin service on a single host. For that reason it uses the docker host network and all the remaning modules (e.g., master, control, motion planning ) of the Digital Twin service are added on 127.0.0.1.
 
-To run the simulated drivers:
+To run the Niryo One Motion Planning:
 - `sudo ./run_example.sh`
 - Verify that the container is up and running:
-    - `sudo docker ps` - in the output you should be able to see the `control` container up and running`
+    - `sudo docker ps` - in the output you should be able to see the `motion` container up and running`
