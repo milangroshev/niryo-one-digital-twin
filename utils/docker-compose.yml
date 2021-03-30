@@ -1,0 +1,132 @@
+version: "3.8"
+network:
+  # robot_eth_macvlan:
+    driver: macvlan
+    driver_opts:
+      parent: enp0s3
+    ipam:
+      config:
+        - subnet: 10.0.2.0/24 
+        - ip_range: 10.0.2.192/27
+        - aux_address: host=10.0.2.223
+x-hosts: 
+  &hosts
+  extra_hosts: 
+    - niryo-one-master:127.0.0.1
+    - niryo-sim-drivers:127.0.0.1
+    - niryo-one-web:127.0.0.1
+    - niryo-one-control:127.0.0.1
+    - niryo-one-motion:127.0.0.1
+    - niryo-one-interface:127.0.0.1
+    - niryo-one-dtwin:127.0.0.1
+x-ros-config:
+  &ros-config
+  environment: 
+    - ROS_MASTER_URI: http://10.5.98.108:11311
+    - ROS_IP: 169.254.210.1
+services:
+  master:
+    image: niryo-one-master:latest
+    hostname: niryo-one-master
+    # build: 
+    name: master 
+    environment: *ros-config
+    network:
+      robot_eth_macvlan: 
+        ipv4_address: 169.254.210.1  
+    extra_hosts: *hosts
+  drivers: 
+    image: niryo-sim-drivers:latest
+    hostname: niryo-sim-drivers
+    # build: 
+    name: drivers
+    environment: *ros-config
+    network:
+      robot_eth_macvlan: 169.254.210.2
+    extra_hosts: *hosts
+    network:
+      robot_eth_macvlan: 
+        ipv4_address:  :
+  control: 
+    image: niryo-one-control:latest
+    hostname: niryo-one-control
+    build: 
+    name: control
+    environment: *ros-config
+    extra_hosts: *hosts
+    network:
+      robot_eth_macvlan: 
+        ipv4_address: 169.254.210.3
+  motion: 
+    image: niryo-one-motion:latest
+    hostname: niryo-one-motion
+    # build: 
+    name: motion
+    environment: *ros-config
+    ports:
+      - 6901:6901
+      - 5901:5901
+    extra_hosts: *hosts
+    network:
+      robot_eth_macvlan: 
+        ipv4_address: 169.254.210.4
+  interface: 
+    image: niryo-one-dtwin:latest
+    hostname: niryo-one-interface
+    # build: 
+    name: interface
+    environment: *ros-config
+    ports:
+      - 6901:6901
+      - 5901:5901
+    extra_hosts: *hosts
+    network:
+      robot_eth_macvlan: 
+        ipv4_address: 169.254.210.4
+  dtwin: 
+    image: niryo-one-dtwin:latest
+    hostname: niryo-one-dtwin
+    # build: 
+    name: dtwin
+    environment: *ros-config
+    ports:
+      - 6901:6901
+      - 5901:5901
+    extra_hosts: *hosts
+    network:
+      robot_eth_macvlan: 
+        ipv4_address: 169.254.210.4
+  web: 
+    image: niryo-one-web:latest
+    hostname: niryo-one-web
+    # build: 
+    name: web
+    environment: *ros-config
+    extra_hosts: *hosts
+    network:
+      robot_eth_macvlan: 
+        ipv4_address: 169.254.210.4
+      
+# zenoh-router:
+#    image:
+#    name:
+#    ports:
+#      - 7447:7447/tcp
+#      - 7447:7447/udp
+#      - 8000:8000/tcp
+#    network: 169.254.210.7
+#  replay:
+#    image:
+#    build:
+#    env_file:
+#      - replay.env
+#    ports:
+#     - 5000:5000
+#    extra_hosts: *hosts
+
+
+  
+
+
+
+    
