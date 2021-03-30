@@ -49,12 +49,11 @@ To run the Niryo One Digital Twin:
 
 ### How to use it?
 
-- Open your browser and navigate to <host_machine_ip_address:6901>
-- Insert as password: netcom;
+- Open your browser and navigate to `<host_machine_ip_address>:6901`
+- Insert as password: `netcom;`
 - Once the GUI is available double click the desktop script `run_coppelia.sh`
 - This will open CoppeliaSim. Once you are inside:
     - press the play button
     - and click twice on the + icon of the GUI
 - You should see the Niryo One digital Replica going in a down
 - To verify that the Digital Twin service works correctly run the web interface (tutorial [here](../web-interface/)).
-
