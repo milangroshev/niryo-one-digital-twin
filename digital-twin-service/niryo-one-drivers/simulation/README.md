@@ -12,7 +12,7 @@ This container runs the `niryo_one_driver` and `niryo_one_tools` ROS nodes
 
 ### Dependencies:
 - The Niryo One simulated drivers depend on:
-    - master
+    - master (tutorial [here](../../ros-master/)).
  
 note: be sure that all the dependencies are running before you run the Niryo One simulated drivers container
 
