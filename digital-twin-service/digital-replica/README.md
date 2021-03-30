@@ -22,11 +22,11 @@ This container runs CoppeliaSim with the ROS interface in a VNC container
 - The Niryo One Digital Twin depend on:
     - master (tutorial [here](../../ros-master/)).
     - sim-drivers (tutorial [here](../../niryo-one-drivers/simulation/)).
-    - control (tutorial [here](../niryo-one-stack/niryo-one-control/)).
-    - motion (tutorial [here](../niryo-one-stack/niryo-one-motion/)).
-    - interface (tutorial [here](../niryo-one-stack/niryo-one-interface/)).
+    - ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) control (tutorial [here](../niryo-one-stack/niryo-one-control/)).
+    - ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) motion (tutorial [here](../niryo-one-stack/niryo-one-motion/)).
+    - ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) interface (tutorial [here](../niryo-one-stack/niryo-one-interface/)).
 
-note: instead of running each module separatly (control, motion, interface) you can run the Niryo One Stack in a single container (tutorial [here](../niryo-one-stack/niryo-one-stack/)).
+![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) instead of running each module separatly (control, motion, interface) you can run the Niryo One Stack in a single container (tutorial [here](../niryo-one-stack/niryo-one-stack/)).
  
 note: be sure that all the dependencies are running before you run the Niryo One Digital Twin container
 
