@@ -30,7 +30,7 @@ services:
   master:
     image: niryo-ros-master:latest
     hostname: niryo-one-master
-    #build:
+    build: ../../digital-twin-service/ros-master/
     environment: *ros-config
     extra_hosts: *hosts
     networks:
@@ -38,7 +38,7 @@ services:
   drivers:
     image: niryo-sim-drivers:latest
     hostname: niryo-sim-drivers
-    # build:
+    build: ../../digital-twin-service/ros-master/
     environment: *ros-config
     extra_hosts: *hosts
     networks:
@@ -48,7 +48,7 @@ services:
   control:
     image: niryo-one-control:latest
     hostname: niryo-one-control
-    # build:
+    build: ../../digital-twin-service/niryo-one-stack/niryo-one-control/
     environment: *ros-config
     extra_hosts: *hosts
     networks:
@@ -59,7 +59,7 @@ services:
   motion:
     image: niryo-one-motion:latest
     hostname: niryo-one-motion
-    # build:
+    build: ../../digital-twin-service/niryo-one-stack/niryo-one-motion/
     environment: *ros-config
     extra_hosts: *hosts
     networks:
@@ -69,7 +69,7 @@ services:
   interface:
     image: niryo-one-interface:latest
     hostname: niryo-one-interface
-    # build:
+    build: ../../digital-twin-service/niryo-one-stack/niryo-one-interface/
     environment: *ros-config
     extra_hosts: *hosts
     networks:
@@ -79,7 +79,7 @@ services:
   dtwin:
     image: niryo-one-dtwin:latest
     hostname: niryo-one-dtwin
-    # build:
+    build: ../../digital-twin-service/digital-replica/
     environment: *ros-config
     extra_hosts: *hosts
     ports:
@@ -92,7 +92,7 @@ services:
   web:
     image: niryo-one-web:latest
     hostname: niryo-one-web
-    # build:
+    build: ../../digital-twin-service/web-interface/
     environment: *ros-config
     extra_hosts: *hosts
     ports:

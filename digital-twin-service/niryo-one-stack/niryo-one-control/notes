@@ -1,0 +1,18 @@
+
+1. source /opt/ros/melodic/setup.bash
+2. rosnode list
+
+NODES that drivers birngup and are needed for the control to be launched
+/niryo_one_driver
+/niryo_one_tools
+/rosout
+
+in the BASH SCRIPT
+1. source /opt/ros/melodic/setup.bash
+2. rosnode list
+3. put the output to a list or whatever
+4. check that the list is = [/niryo_one_driver /niryo_one_tools /rosout]
+if yes:
+then start the node: source /opt/ros/melodic/setup.bash && source catkin_ws/devel/setup.bash && roslaunch niryo_one_bringup twin_control_bringup.launch --screen
+if no:
+loop
