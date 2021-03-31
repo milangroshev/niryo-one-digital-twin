@@ -32,9 +32,9 @@ simulator.
  
  ### Run Digital Twin service
  - The scenarios [folder](./scenarios/) is composed of different deployment options for the Digital Twin service.
-    - single host scenarios (tutorial [here](./scenarios/single-host-scenario/)) ![#00FF00](https://via.placeholder.com/15/00ff00/000000?text=+) not availabe
-    - multiple hosts scenarios (tutorial [here](./scenarios/multi-host-scenario/)) ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) not availabe
-    - 5g-dive scenario (tutorial [here](./scenarios/5g-dive/)) ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) not availabe
+    - single host scenarios (tutorial [here](./scenarios/single-host-scenario/)) ![#00FF00](https://via.placeholder.com/15/00ff00/000000?text=+) Availabe
+    - multiple hosts scenarios (tutorial [here](./scenarios/multi-host-scenario/)) ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) Not availabe
+    - 5g-dive scenario (tutorial [here](./scenarios/5g-dive/)) ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) Not availabe
  
 ## DISCLAIMER
 The modules provided in this repository are distributed in the hope that they
