@@ -11,5 +11,5 @@ The Niryo One ROS drivers are the lowest-level module that directly interacts wi
 Due to the tight relation with the robots hardware, this module must be deployed in the robot.
 
 This repo provides two options to run the robot drivers:
-- robot: run them as container on the phisical Niryo One (tutorial [here](./robot/)).
+- robot: run them as container on the physical Niryo One (tutorial [here](./robot/)).
 - simulation: run them as simulated drivers in any commodoty hardware (tutorial [here](./simulation/)).
