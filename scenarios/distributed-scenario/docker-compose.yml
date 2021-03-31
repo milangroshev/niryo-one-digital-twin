@@ -2,8 +2,11 @@ version: "3.8"
 networks:
   digital-twin-service:
     driver: bridge
-    config: 
-      - subnet: 172.23.0.0/16
+    ipam:
+      driver: default 
+      config: 
+        - subnet: "172.23.0.0/16"
+          gateway: "172.23.0.1"
   # robot_eth_macvlan:
   #  driver: macvlan
   #  driver_opts:
