@@ -1,2 +1,2 @@
-# Robot drivers on the phisical Niryo One
+# Robot drivers on the physical Niryo One
 TO BE DONE
