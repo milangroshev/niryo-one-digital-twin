@@ -17,7 +17,7 @@ simulator.
 
 ## Getting Started
  ### Digital Twin service description
- The Digital Twin service is composed of 6 different modules:
+ The Digital Twin [service](./digital-twin-service/) is composed of 6 different modules:
  - ROS master: The ROS Master provides naming and registration services to the rest of the modules in the Digital Twin service (detailed info [here](./digital-twin-service/ros-master/)).
  - ROS Drivers: Porvides the basic sensor and actuator functionalities of the robot arm (detailed info [here](./digital-twin-service/niryo-one-drivers/)).
  - Robot Stack: The robot stack composed of Control, Motion Planning and Interface modules. (detailed info [here](./digital-twin-service/niryo-one-stack/)).
