@@ -18,12 +18,12 @@ simulator.
 ## Getting Started
  ### Digital Twin service description
  The Digital Twin [service](./digital-twin-service/) is composed of 6 different modules:
- - ROS master: The ROS Master provides naming and registration services to the rest of the modules in the Digital Twin service (detailed info [here](./digital-twin-service/ros-master/)).
- - ROS Drivers: Porvides the basic sensor and actuator functionalities of the robot arm (detailed info [here](./digital-twin-service/niryo-one-drivers/)).
- - Robot Stack: The robot stack composed of Control, Motion Planning and Interface modules. (detailed info [here](./digital-twin-service/niryo-one-stack/)).
- - Digital Replica: Provides the virtual object that replicates the behavior of the Niryo One robot arm (detailed info [here](./digital-twin-service/digital-replica/)).
- - Web interface: GUI for remote operation (detailed info [here](./digital-twin-service/web-interface/)).
- - Replay feature: Replays last 30 seconds of the robot remote operation in a separate virtual object. (detailed info [here](./digital-twin-service/replay-feature/)). ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) Not available
+ - ROS master: The ROS Master provides naming and registration services to the rest of the modules in the Digital Twin service (detailed info [here](./digital-twin-service/ros-master/)).![#00FF00](https://via.placeholder.com/15/00ff00/000000?text=+) Available
+ - ROS Drivers: Porvides the basic sensor and actuator functionalities of the robot arm (detailed info [here](./digital-twin-service/niryo-one-drivers/)).![#00FF00](https://via.placeholder.com/15/00ff00/000000?text=+) Available
+ - Robot Stack: The robot stack composed of Control, Motion Planning and Interface modules. (detailed info [here](./digital-twin-service/niryo-one-stack/)).![#00FF00](https://via.placeholder.com/15/00ff00/000000?text=+) Available
+ - Digital Replica: Provides the virtual object that replicates the behavior of the Niryo One robot arm (detailed info [here](./digital-twin-service/digital-replica/)).![#00FF00](https://via.placeholder.com/15/00ff00/000000?text=+) Available
+ - Web interface: GUI for remote operation (detailed info [here](./digital-twin-service/web-interface/)).![#00FF00](https://via.placeholder.com/15/00ff00/000000?text=+) Available
+ - Replay feature: Replays last 30 seconds of the robot remote operation in a separate virtual object. (detailed info [here](./digital-twin-service/replay-feature/)).![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) Not available
  ### Install Requirements
  - Install fresh Ubuntu 16.04, 18.04 or 20.04 Desktop (in a VM or as native OS)
  - Install Docker Engine (tutorial [here](https://docs.docker.com/engine/install/ubuntu/))
