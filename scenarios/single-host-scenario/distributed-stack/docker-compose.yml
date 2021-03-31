@@ -2,7 +2,7 @@ version: "3.8"
 networks:
   digital-twin-service:
     driver: bridge
-x-hosts: &hosits
+x-hosts: &hosts
     - niryo-one-master:127.0.0.1
     - niryo-one-drivers:127.0.0.1
     - niryo-one-control:127.0.0.1

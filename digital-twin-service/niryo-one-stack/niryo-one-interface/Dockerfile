@@ -27,7 +27,7 @@ RUN rosdep update && \
 
 COPY launch/* catkin_ws/src/niryo_one_bringup/launch/
 RUN rm catkin_ws/src/niryo_one_user_interface/scripts/joystick_interface.py
-COPY scripts/joystick_interface.py catkin_ws/src/niryo_one_user_interface/scripts/joystick_interface.p
+COPY scripts/joystick_interface.py catkin_ws/src/niryo_one_user_interface/scripts/joystick_interface.py
 
 RUN mkdir -p /home/niryo/scripts
 COPY scripts/wait-for-ros-nodes.sh /home/niryo/scripts/
