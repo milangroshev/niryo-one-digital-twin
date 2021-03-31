@@ -6,7 +6,7 @@ This repository contains the necessary files to run the Niryo One ROS drivers.
 
 The Niryo One ROS drivers are the lowest-level module that directly interacts with the robot hardware and is responsible for:
 - making available sensor data andoperational states to the other modules
-- executinginstructions or navigation commands received from thecontrol module. 
+- executing instructions or navigation commands received from the control module. 
 
 Due to the tight relation with the robots hardware, this module must be deployed in the robot.
 
