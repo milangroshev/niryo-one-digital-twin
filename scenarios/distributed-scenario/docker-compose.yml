@@ -2,6 +2,8 @@ version: "3.8"
 networks:
   digital-twin-service:
     driver: bridge
+    config: 
+      - subnet: 172.23.0.0/16
   # robot_eth_macvlan:
   #  driver: macvlan
   #  driver_opts:
@@ -16,16 +18,16 @@ networks:
   #    robot_eth_macvlan:
   #    ipv4_address: 169.254.210.1
 x-hosts: &hosts
-    - niryo-one-master:127.0.0.1
-    - niryo-sim-drivers:127.0.0.1
-    - niryo-one-web:127.0.0.1
-    - niryo-one-control:127.0.0.1
-    - niryo-one-motion:127.0.0.1
-    - niryo-one-interface:127.0.0.1
-    - niryo-one-dtwin:127.0.0.1
+    - niryo-one-master:172.23.0.2
+    - niryo-sim-drivers:172.23.0.3
+    - niryo-one-control:172.23.0.4
+    - niryo-one-motion:172.23.0.5
+    - niryo-one-interface:172.23.0.6
+    - niryo-one-dtwin:172.23.0.7
+    - niryo-one-web:172.23.0.8
 x-ros-config: &ros-config
-    - ROS_MASTER_URI=http://127.0.0.1:11311
-    - ROS_IP=127.0.0.1
+    - ROS_MASTER_URI=http://172.23.0.2:11311
+    - ROS_IP=172.23.0.2
 services:
   master:
     image: niryo-ros-master:latest
@@ -34,7 +36,8 @@ services:
     environment: *ros-config
     extra_hosts: *hosts
     networks:
-      - digital-twin-service
+      digital-twin-service:
+        ipv4_address: 172.23.0.2
   drivers:
     image: niryo-sim-drivers:latest
     hostname: niryo-sim-drivers
@@ -42,7 +45,8 @@ services:
     environment: *ros-config
     extra_hosts: *hosts
     networks:
-      - digital-twin-service
+      digital-twin-service:
+        ipv4_address: 172.23.0.3
     depends_on:
       - master
   control:
@@ -52,7 +56,8 @@ services:
     environment: *ros-config
     extra_hosts: *hosts
     networks:
-      - digital-twin-service
+      digital-twin-service:
+        ipv4_address: 172.23.0.4
     depends_on:
       - master
       - drivers
@@ -63,7 +68,8 @@ services:
     environment: *ros-config
     extra_hosts: *hosts
     networks:
-      - digital-twin-service
+      digital-twin-service:
+        ipv4_address: 172.23.0.5
     depends_on:
       - control
   interface:
@@ -73,7 +79,8 @@ services:
     environment: *ros-config
     extra_hosts: *hosts
     networks:
-      - digital-twin-service
+      digital-twin-service:
+        ipv4_address: 172.23.0.6
     depends_on:
       - motion
   dtwin:
@@ -86,7 +93,8 @@ services:
       - 6901:6901
       - 5901:5901
     networks:
-      - digital-twin-service
+      digital-twin-service:
+        ipv4_address: 172.23.0.7
     depends_on:
       - interface
   web:
@@ -98,7 +106,8 @@ services:
     ports:
       - 8080:8080
     networks:
-      - digital-twin-service
+      digital-twin-service:
+        ipv4_address: 172.23.0.8
     depends_on:
       - dtwin
 # zenoh-router:
