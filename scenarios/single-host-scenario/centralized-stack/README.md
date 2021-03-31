@@ -2,7 +2,7 @@
 
 ## What is this?
 
-This repository contains the necessary files to run the Niryo One Digital Twin service using Docker compose, on a single host with centralized stuck. 
+This repository contains the necessary files to run the Niryo One Digital Twin service using Docker compose, on a single host with centralized robot stack. Centralized robot stack means that the [Niryo One Stack](../../../digital-twin-service/niryo-one-stack/niryo-one-stack/) (Control, Motion, Interface) will be deployed in a single docker container.  
 
 ## What does this docker compose do?
 
