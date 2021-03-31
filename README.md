@@ -32,8 +32,8 @@ simulator.
  
  ### Run Digital Twin service
  - The scenario folder is composed of different deployment options for the Digital Twin service.
-    - single host scenarios (tutorial [here](./scenarios/centralized-scenario/))
-    - multiple hosts scenarios (tutorial [here](./scenarios/distributed-scenario/))
+    - single host scenarios (tutorial [here](./scenarios/single-host-scenario/))
+    - multiple hosts scenarios (tutorial [here](./scenarios/multi-host-scenario/))
     - 5g-dive scenario (tutorial [here](./scenarios/5g-dive/))
  
 ## DISCLAIMER
