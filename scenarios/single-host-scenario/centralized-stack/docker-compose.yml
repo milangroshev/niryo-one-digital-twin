@@ -2,7 +2,7 @@ version: "3.8"
 networks:
   digital-twin-service:
     driver: bridge
-x-hosts: &hosits
+x-hosts: &hosts
     - niryo-one-master:127.0.0.1
     - niryo-one-drivers:127.0.0.1
     - niryo-one-stack:127.0.0.1
@@ -14,14 +14,14 @@ services:
   master:
     image: niryo-ros-master:latest
     hostname: niryo-one-master
-    build: ../../digital-twin-service/ros-master/
+    build: ../../../digital-twin-service/ros-master/
     environment: *ros-config
     extra_hosts: *hosts
     network_mode: host
   drivers:
     image: niryo-sim-drivers:latest
     hostname: niryo-one-drivers
-    build: ../../digital-twin-service/niryo-one-drivers/simulation/
+    build: ../../../digital-twin-service/niryo-one-drivers/simulation/
     environment: *ros-config
     extra_hosts: *hosts
     network_mode: host
@@ -30,7 +30,7 @@ services:
   robot-stack:
     image: niryo-one-full-stack:latest
     hostname: niryo-one-stack
-    build: ../../digital-twin-service/niryo-one-stack/niryo-one-stack/
+    build: ../../../digital-twin-service/niryo-one-stack/niryo-one-stack/
     environment: *ros-config
     extra_hosts: *hosts
     network_mode: host
@@ -40,7 +40,7 @@ services:
   dtwin:
     image: niryo-one-dtwin:latest
     hostname: niryo-one-dtwin
-    build: ../../digital-twin-service/digital-replica/
+    build: ../../../digital-twin-service/digital-replica/
     environment: *ros-config
     extra_hosts: *hosts
     network_mode: host
@@ -51,7 +51,7 @@ services:
   web:
     image: niryo-one-web:latest
     hostname: niryo-one-web
-    build: ../../digital-twin-service/web-interface/
+    build: ../../../digital-twin-service/web-interface/
     environment: *ros-config
     extra_hosts: *hosts
     network_mode: host

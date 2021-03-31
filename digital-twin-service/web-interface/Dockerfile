@@ -29,5 +29,6 @@ RUN rosdep update && \
 
 ADD ./web_interface/ .
 COPY scripts/* /root/
+RUN chmod +755 wait-for-ros-nodes.sh
 
 CMD bash -c "./wait-for-ros-nodes.sh"

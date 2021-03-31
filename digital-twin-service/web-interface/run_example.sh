@@ -9,7 +9,6 @@ sudo docker run \
        --hostname niryo-one-web \
        -it \
        --rm \
-       -d \
        --net=host \
        --name web-interface \
        -p 8080:8080 \
