@@ -2,7 +2,7 @@
 
 ## What is this?
 
-This repository contains the necessary files to run the Niryo One Digital Twin service using Docker compose, on a single host with distributed robot stack. Distributed robot stack means that for every module of the [Niryo One Stack] (../../digital-twin-service/niryo-one-stack) (Control, Motion, Interface), the deployment will have separate docker container. 
+This repository contains the necessary files to run the Niryo One Digital Twin service using Docker compose, on a single host with distributed robot stack. Distributed robot stack means that for every module of the [Niryo One Stack](../../digital-twin-service/niryo-one-stack) (Control, Motion, Interface), the deployment will have separate docker container. 
 
 ## What does this docker compose do?
 
