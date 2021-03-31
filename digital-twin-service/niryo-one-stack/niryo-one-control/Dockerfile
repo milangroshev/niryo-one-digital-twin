@@ -29,4 +29,8 @@ COPY launch/* catkin_ws/src/niryo_one_bringup/launch/
 
 RUN cd catkin_ws && bash -c "source /opt/ros/melodic/setup.bash && catkin_make"
 
+COPY wait-for-node.sh .
+COPY rosnode_list.txt .
+CMD bash -c "./wait-for-node.sh rosnode_list.txt"
+
 CMD bash -c "source /opt/ros/melodic/setup.bash && source catkin_ws/devel/setup.bash && roslaunch niryo_one_bringup twin_control_bringup.launch --screen"

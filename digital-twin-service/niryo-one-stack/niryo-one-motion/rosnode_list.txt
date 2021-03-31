@@ -1,5 +1,4 @@
 /controller_spawner
-/move_group
 /niryo_one_driver
 /niryo_one_tools
 /robot_state_publisher

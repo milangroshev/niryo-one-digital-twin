@@ -38,7 +38,7 @@ services:
   drivers:
     image: niryo-sim-drivers:latest
     hostname: niryo-sim-drivers
-    build: ../../digital-twin-service/ros-master/
+    build: ../../digital-twin-service/niryo-one-drivers/simulation/
     environment: *ros-config
     extra_hosts: *hosts
     networks:

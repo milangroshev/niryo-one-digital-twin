@@ -1,13 +1,6 @@
 /controller_spawner
-/joy_node
 /move_group
-/move_group_commander_wrappers_1617116828924829726
-/niryo_one_commander
 /niryo_one_driver
 /niryo_one_tools
 /robot_state_publisher
-/rosapi
-/rosbridge_websocket
 /rosout
-/tf2_web_republisher
-/user_interface
