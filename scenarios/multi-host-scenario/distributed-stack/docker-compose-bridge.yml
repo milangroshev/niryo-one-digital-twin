@@ -1,0 +1,131 @@
+version: "3.8"
+networks:
+  digital-twin-service:
+    driver: bridge
+    ipam:
+      driver: default 
+      config: 
+        - subnet: "172.23.0.0/16"
+          gateway: "172.23.0.1"
+  # robot_eth_macvlan:
+  #  driver: macvlan
+  #  driver_opts:
+  #    parent: enp0s3
+  #  ipam:
+  #    config:
+  #      - subnet: 10.0.2.0/24
+  #      - ip_range: 10.0.2.192/27
+  #      - aux_address: host=10.0.2.223
+
+  # network:
+  #    robot_eth_macvlan:
+  #    ipv4_address: 169.254.210.1
+x-hosts: &hosts
+    - niryo-one-master:172.23.0.2
+    - niryo-sim-drivers:172.23.0.3
+    - niryo-one-control:172.23.0.4
+    - niryo-one-motion:172.23.0.5
+    - niryo-one-interface:172.23.0.6
+    - niryo-one-dtwin:172.23.0.7
+    - niryo-one-web:172.23.0.8
+x-ros-config: &ros-config
+    - ROS_MASTER_URI=http://172.23.0.2:11311
+    - ROS_IP=172.23.0.2
+services:
+  master:
+    image: niryo-ros-master:latest
+    hostname: niryo-one-master
+    build: ../../digital-twin-service/ros-master/
+    environment: *ros-config
+    extra_hosts: *hosts
+    networks:
+      digital-twin-service:
+        ipv4_address: 172.23.0.2
+  drivers:
+    image: niryo-sim-drivers:latest
+    hostname: niryo-sim-drivers
+    build: ../../digital-twin-service/niryo-one-drivers/simulation/
+    environment: *ros-config
+    extra_hosts: *hosts
+    networks:
+      digital-twin-service:
+        ipv4_address: 172.23.0.3
+    depends_on:
+      - master
+  control:
+    image: niryo-one-control:latest
+    hostname: niryo-one-control
+    build: ../../digital-twin-service/niryo-one-stack/niryo-one-control/
+    environment: *ros-config
+    extra_hosts: *hosts
+    networks:
+      digital-twin-service:
+        ipv4_address: 172.23.0.4
+    depends_on:
+      - master
+      - drivers
+  motion:
+    image: niryo-one-motion:latest
+    hostname: niryo-one-motion
+    build: ../../digital-twin-service/niryo-one-stack/niryo-one-motion/
+    environment: *ros-config
+    extra_hosts: *hosts
+    networks:
+      digital-twin-service:
+        ipv4_address: 172.23.0.5
+    depends_on:
+      - control
+  interface:
+    image: niryo-one-interface:latest
+    hostname: niryo-one-interface
+    build: ../../digital-twin-service/niryo-one-stack/niryo-one-interface/
+    environment: *ros-config
+    extra_hosts: *hosts
+    networks:
+      digital-twin-service:
+        ipv4_address: 172.23.0.6
+    depends_on:
+      - motion
+  dtwin:
+    image: niryo-one-dtwin:latest
+    hostname: niryo-one-dtwin
+    build: ../../digital-twin-service/digital-replica/
+    environment: *ros-config
+    extra_hosts: *hosts
+    ports:
+      - 6901:6901
+      - 5901:5901
+    networks:
+      digital-twin-service:
+        ipv4_address: 172.23.0.7
+    depends_on:
+      - interface
+  web:
+    image: niryo-one-web:latest
+    hostname: niryo-one-web
+    build: ../../digital-twin-service/web-interface/
+    environment: *ros-config
+    extra_hosts: *hosts
+    ports:
+      - 8080:8080
+    networks:
+      digital-twin-service:
+        ipv4_address: 172.23.0.8
+    depends_on:
+      - dtwin
+# zenoh-router:
+#    image:
+#    name:
+#    ports:
+#      - 7447:7447/tcp
+#      - 7447:7447/udp
+#      - 8000:8000/tcp
+#    network: 169.254.210.7
+#  replay:
+#    image:
+#    build:
+#    env_file:
+#      - replay.env
+#    ports:
+#     - 5000:5000
+#    extra_hosts: *hosts
