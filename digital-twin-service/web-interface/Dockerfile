@@ -28,6 +28,6 @@ RUN rosdep update && \
     cd .. && bash -c "source /opt/ros/melodic/setup.bash && catkin_make"
 
 ADD ./web_interface/ .
+COPY scripts/* /root/
 
-# Run Web Interface
-CMD bash -c "source /opt/ros/melodic/setup.bash && source ~/catkin_ws/devel/setup.bash && ./start.sh"
+CMD bash -c "./wait-for-ros-nodes.sh"

@@ -26,11 +26,14 @@ RUN rosdep update && \
     git clone https://github.com/NiryoRobotics/niryo_one_ros.git .
 
 COPY launch/* catkin_ws/src/niryo_one_bringup/launch/
+RUN mkdir -p /home/niryo/scripts
+COPY scripts/* /home/niryo/scripts/
 
 RUN cd catkin_ws && bash -c "source /opt/ros/melodic/setup.bash && catkin_make"
 
-COPY wait-for-node.sh .
-COPY rosnode_list.txt .
-CMD bash -c "./wait-for-node.sh rosnode_list.txt"
+WORKDIR /home/niryo/scripts/
+USER root
+RUN chmod +755 wait-for-ros-nodes.sh
+USER niryo
 
-CMD bash -c "source /opt/ros/melodic/setup.bash && source catkin_ws/devel/setup.bash && roslaunch niryo_one_bringup twin_motion_bringup.launch --screen"
+CMD bash -c "./wait-for-ros-nodes.sh"

@@ -1,5 +1,0 @@
-/controller_spawner
-/niryo_one_driver
-/niryo_one_tools
-/robot_state_publisher
-/rosout
