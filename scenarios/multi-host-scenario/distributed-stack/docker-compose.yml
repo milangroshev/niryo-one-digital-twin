@@ -11,7 +11,7 @@ x-hosts: &hosts
     - niryo-one-dtwin:10.5.98.109
     - niryo-one-web:10.5.98.109
 x-ros-config: &ros-config
-    - ROS_MASTER_URI=http://10.5.98.109:11311
+    - ROS_MASTER_URI=http://10.5.98.108:11311
 services:
   master:
     image: niryo-ros-master:latest
@@ -23,7 +23,7 @@ services:
     deploy: 
       placement: 
         constraints: 
-          module: robot
+          - module=robot
   drivers:
     image: niryo-sim-drivers:latest
     hostname: niryo-one-drivers
@@ -36,7 +36,7 @@ services:
     deploy: 
       placement: 
         constraints: 
-          module: robot
+          - module=robot
   control:
     image: niryo-one-control:latest
     hostname: niryo-one-control
@@ -50,7 +50,7 @@ services:
     deploy: 
       placement: 
         constraints: 
-          module: control
+          - module=control
   motion:
     image: niryo-one-motion:latest
     hostname: niryo-one-motion
@@ -65,7 +65,7 @@ services:
     deploy: 
       placement: 
         constraints: 
-          module: motion
+          - module=motion
   interface:
    image: niryo-one-interface:latest
    hostname: niryo-one-motion
@@ -81,7 +81,7 @@ services:
    deploy: 
     placement: 
       constraints: 
-        module: interface
+        - module=interface
   dtwin:
     image: niryo-one-dtwin:latest
     hostname: niryo-one-dtwin
@@ -98,7 +98,7 @@ services:
     deploy: 
       placement: 
         constraints: 
-          module: app
+          - module=app
   web:
     image: niryo-one-web:latest
     hostname: niryo-one-web
@@ -116,7 +116,7 @@ services:
     deploy: 
       placement: 
         constraints: 
-          module: app
+          - module=app
 # zenoh-router:
 #    image:
 #    name:
