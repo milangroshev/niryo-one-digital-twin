@@ -1,17 +1,17 @@
 version: "3.8"
 networks:
   digital-twin-service:
-    driver: bridge
+    # driver: bridge
 x-hosts: &hosts
-    - niryo-one-master:127.0.0.1
-    - niryo-one-drivers:127.0.0.1
-    - niryo-one-control:127.0.0.1
-    - niryo-one-motion:127.0.0.1
-    - niryo-one-interface:127.0.0.1
-    - niryo-one-dtwin:127.0.0.1
-    - niryo-one-web:127.0.0.1
+    - niryo-one-master:10.5.98.108
+    - niryo-one-drivers:10.5.98.108
+    - niryo-one-control:10.5.98.107
+    - niryo-one-motion:10.5.98.106
+    - niryo-one-interface:10.5.98.105
+    - niryo-one-dtwin:10.5.98.109
+    - niryo-one-web:10.5.98.109
 x-ros-config: &ros-config
-    - ROS_MASTER_URI=http://127.0.0.1:11311
+    - ROS_MASTER_URI=http://10.5.98.109:11311
 services:
   master:
     image: niryo-ros-master:latest
@@ -20,6 +20,10 @@ services:
     environment: *ros-config
     extra_hosts: *hosts
     network_mode: host
+    deploy: 
+      placement: 
+        constraints: 
+          module: robot
   drivers:
     image: niryo-sim-drivers:latest
     hostname: niryo-one-drivers
@@ -29,6 +33,10 @@ services:
     network_mode: host
     depends_on:
       - master
+    deploy: 
+      placement: 
+        constraints: 
+          module: robot
   control:
     image: niryo-one-control:latest
     hostname: niryo-one-control
@@ -39,6 +47,10 @@ services:
     depends_on:
       - master
       - drivers
+    deploy: 
+      placement: 
+        constraints: 
+          module: control
   motion:
     image: niryo-one-motion:latest
     hostname: niryo-one-motion
@@ -50,6 +62,10 @@ services:
       - master
       - drivers
       - control
+    deploy: 
+      placement: 
+        constraints: 
+          module: motion
   interface:
    image: niryo-one-interface:latest
    hostname: niryo-one-motion
@@ -62,6 +78,10 @@ services:
      - drivers
      - control
      - motion
+   deploy: 
+    placement: 
+      constraints: 
+        module: interface
   dtwin:
     image: niryo-one-dtwin:latest
     hostname: niryo-one-dtwin
@@ -75,6 +95,10 @@ services:
       - control
       - motion
       - interface
+    deploy: 
+      placement: 
+        constraints: 
+          module: app
   web:
     image: niryo-one-web:latest
     hostname: niryo-one-web
@@ -89,6 +113,10 @@ services:
       - motion
       - interface
       - dtwin
+    deploy: 
+      placement: 
+        constraints: 
+          module: app
 # zenoh-router:
 #    image:
 #    name:
