@@ -1,17 +1,21 @@
 version: "3.8"
 networks:
   digital-twin-service:
-    # driver: bridge
+      ipam: 
+          driver: overlay
+          config:  
+            - subnet: "192.168.0.0/24"
+             # gateway: "192.168.0.1"
 x-hosts: &hosts
-    - niryo-one-master:10.5.98.108
-    - niryo-one-drivers:10.5.98.108
-    - niryo-one-control:10.5.98.107
-    - niryo-one-motion:10.5.98.106
-    - niryo-one-interface:10.5.98.105
-    - niryo-one-dtwin:10.5.98.109
-    - niryo-one-web:10.5.98.109
+    - niryo-one-master:192.168.0.2
+    - niryo-one-drivers:192.168.0.3
+    - niryo-one-control:192.168.0.4
+    - niryo-one-motion:192.168.0.5
+    - niryo-one-interface:192.168.0.6
+    - niryo-one-dtwin:192.168.0.7
+    - niryo-one-web:192.168.0.8
 x-ros-config: &ros-config
-    - ROS_MASTER_URI=http://10.5.98.108:11311
+    - ROS_MASTER_URI=http://192.168.0.2:11311
 services:
   master:
     image: niryo-ros-master:latest
@@ -22,8 +26,7 @@ services:
     network_mode: host
     deploy: 
       placement: 
-        constraints: 
-          - module=robot
+        constraints: [node.labels.module == robot]
   drivers:
     image: niryo-sim-drivers:latest
     hostname: niryo-one-drivers
@@ -35,8 +38,7 @@ services:
       - master
     deploy: 
       placement: 
-        constraints: 
-          - module=robot
+        constraints: [node.labels.module == robot]
   control:
     image: niryo-one-control:latest
     hostname: niryo-one-control
@@ -49,8 +51,7 @@ services:
       - drivers
     deploy: 
       placement: 
-        constraints: 
-          - module=control
+        constraints: [node.labels.module == control]
   motion:
     image: niryo-one-motion:latest
     hostname: niryo-one-motion
@@ -64,8 +65,7 @@ services:
       - control
     deploy: 
       placement: 
-        constraints: 
-          - module=motion
+        constraints: [node.labels.module == motion]
   interface:
    image: niryo-one-interface:latest
    hostname: niryo-one-motion
@@ -80,8 +80,7 @@ services:
      - motion
    deploy: 
     placement: 
-      constraints: 
-        - module=interface
+      constraints: [node.labels.module == interface]
   dtwin:
     image: niryo-one-dtwin:latest
     hostname: niryo-one-dtwin
@@ -97,8 +96,7 @@ services:
       - interface
     deploy: 
       placement: 
-        constraints: 
-          - module=app
+        constraints: [node.labels.module == app]
   web:
     image: niryo-one-web:latest
     hostname: niryo-one-web
@@ -115,8 +113,7 @@ services:
       - dtwin
     deploy: 
       placement: 
-        constraints: 
-          - module=app
+        constraints: [node.labels.module == app]
 # zenoh-router:
 #    image:
 #    name:
