@@ -1,64 +1,59 @@
 version: "3.8"
 networks:
   digital-twin-service:
-      ipam: 
-          driver: overlay
-          config:  
-            - subnet: "192.168.0.0/24"
-             # gateway: "192.168.0.1"
-x-hosts: &hosts
-    - niryo-one-master:192.168.0.2
-    - niryo-one-drivers:192.168.0.3
-    - niryo-one-control:192.168.0.4
-    - niryo-one-motion:192.168.0.5
-    - niryo-one-interface:192.168.0.6
-    - niryo-one-dtwin:192.168.0.7
-    - niryo-one-web:192.168.0.8
+      # ipam: 
+      #    driver: overlay
 x-ros-config: &ros-config
-    - ROS_MASTER_URI=http://192.168.0.2:11311
+    - ROS_MASTER_URI=http://master:11311
 services:
   master:
     image: niryo-ros-master:latest
-    hostname: niryo-one-master
+    # hostname: niryo-one-master
     build: ../../../digital-twin-service/ros-master/
     environment: *ros-config
-    extra_hosts: *hosts
-    network_mode: host
+    # extra_hosts: *hosts
+   # network_mode: host
     deploy: 
       placement: 
         constraints: [node.labels.module == robot]
+    networks:
+      - digital-twin-service
   drivers:
     image: niryo-sim-drivers:latest
-    hostname: niryo-one-drivers
+    # hostname: niryo-one-drivers
     build: ../../../digital-twin-service/niryo-one-drivers/simulation/
     environment: *ros-config
-    extra_hosts: *hosts
-    network_mode: host
+    # extra_hosts: *hosts
+    # network_mode: host
     depends_on:
       - master
     deploy: 
       placement: 
         constraints: [node.labels.module == robot]
+    networks:
+      - digital-twin-service 
   control:
     image: niryo-one-control:latest
-    hostname: niryo-one-control
+    # hostname: niryo-one-control
     build: ../../../digital-twin-service/niryo-one-stack/niryo-one-control/
     environment: *ros-config
-    extra_hosts: *hosts
-    network_mode: host
+    # extra_hosts: *hosts
+    # network_mode: host
     depends_on:
       - master
       - drivers
     deploy: 
       placement: 
         constraints: [node.labels.module == control]
+    networks:
+      - digital-twin-service
   motion:
     image: niryo-one-motion:latest
-    hostname: niryo-one-motion
+    # hostname: niryo-one-motion
     build: ../../../digital-twin-service/niryo-one-stack/niryo-one-motion/
     environment: *ros-config
-    extra_hosts: *hosts
-    network_mode: host
+    # extra_hosts: *hosts
+    # network_mode: host
     depends_on:
       - master
       - drivers
@@ -66,13 +61,15 @@ services:
     deploy: 
       placement: 
         constraints: [node.labels.module == motion]
+    networks:
+      - digital-twin-service
   interface:
    image: niryo-one-interface:latest
-   hostname: niryo-one-motion
+   # hostname: niryo-one-motion
    build: ../../../digital-twin-service/niryo-one-stack/niryo-one-interface/
    environment: *ros-config
-   extra_hosts: *hosts
-   network_mode: host
+   # extra_hosts: *hosts
+   # network_mode: host
    depends_on:
      - master
      - drivers
@@ -81,29 +78,35 @@ services:
    deploy: 
     placement: 
       constraints: [node.labels.module == interface]
+   networks:
+     - digital-twin-service
   dtwin:
     image: niryo-one-dtwin:latest
-    hostname: niryo-one-dtwin
+    # hostname: niryo-one-dtwin
     build: ../../../digital-twin-service/digital-replica/
     environment: *ros-config
-    extra_hosts: *hosts
-    network_mode: host
+    # extra_hosts: *hosts
+    # network_mode: host
     depends_on:
       - master
       - drivers
       - control
       - motion
       - interface
+    ports:
+      - "6901:6901"
     deploy: 
       placement: 
         constraints: [node.labels.module == app]
+    networks: 
+      - digital-twin-service
   web:
     image: niryo-one-web:latest
-    hostname: niryo-one-web
+    # hostname: niryo-one-web
     build: ../../../digital-twin-service/web-interface/
     environment: *ros-config
-    extra_hosts: *hosts
-    network_mode: host
+    # extra_hosts: *hosts
+    # network_mode: host
     depends_on:
       - master
       - drivers
@@ -111,9 +114,13 @@ services:
       - motion
       - interface
       - dtwin
+    ports:
+      - "8080:8080"
     deploy: 
       placement: 
         constraints: [node.labels.module == app]
+    networks:
+      - digital-twin-service 
 # zenoh-router:
 #    image:
 #    name:
