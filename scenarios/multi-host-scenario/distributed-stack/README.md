@@ -45,8 +45,9 @@ Inspect the status of each Docker-compose service doing like this:
 To remove the stack, use: 
 `docker stack rm digital-twin-stack`.
 
-TO DO: ADD OVERLAY NETWORK CONFIGURATION 
-
+Access the GUIs using the IP of the master node, f.i.:
+* 10.5.98.108:8080 (Web controller)
+* 10.5.98.108:6901 (Digital Twin interface)
 
 
 
