@@ -27,7 +27,11 @@ Each VM will run different services of the stack as indicated after the double c
 
 First configure the controller/master node (10.5.98.108 in our case) by initializing the Docker swarm like this: `docker swarm init`. 
 
-This command will be displayed upon success: `docker swarm join --token SWMTKN-1-4pxdygt5zbrytu30z1w8ddsv6ur45k523zqtnsyjta9jglg51o-9qa0q3r8z0s9jutixtcvykhze 10.5.98.108:2377` with the correct token.
+This command will be displayed upon success: 
+```
+docker swarm join --token SWMTKN-1-4pxdygt5zbrytu30z1w8ddsv6ur45k523zqtnsyjta9jglg51o-9qa0q3r8z0s9jutixtcvykhze 10.5.98.108:2377
+``` 
+with the correct token.
 
 Copy paste this command to the VMs you want to add as workers/slave nodes (CONTROL, MOTION PLANNING...). 
 
@@ -39,11 +43,19 @@ You can run this command in the master for each node: `docker node update --labe
 ## Deployment
 
 Eventually run the containers launching this command in the master node: 
-`docker stack deploy -c docker-compose.yml digital-twin-stack`
+```
+docker stack deploy -c docker-compose.yml digital-twin-stack
+```
+
 Inspect the status of each Docker-compose service doing like this: 
-`docker stack ps digital-twin-stack`.
+```
+docker stack ps digital-twin-stack
+```
+
 To remove the stack, use: 
-`docker stack rm digital-twin-stack`.
+```
+docker stack rm digital-twin-stack
+```
 
 Access the GUIs using the IP of the master node, f.i.:
 * 10.5.98.108:8080 (Web controller)
