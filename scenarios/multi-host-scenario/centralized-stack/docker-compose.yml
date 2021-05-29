@@ -1,77 +1,127 @@
 version: "3.8"
 networks:
   digital-twin-service:
-    driver: bridge
-x-hosts: &hosts
-    - niryo-one-master:127.0.0.1
-    - niryo-one-drivers:127.0.0.1
-    - niryo-one-stack:127.0.0.1
-    - niryo-one-dtwin:127.0.0.1
-    - niryo-one-web:127.0.0.1
 x-ros-config: &ros-config
-    - ROS_MASTER_URI=http://127.0.0.1:11311
+    - ROS_MASTER_URI=http://master:11311
 services:
   master:
     image: niryo-ros-master:latest
-    hostname: niryo-one-master
     build: ../../../digital-twin-service/ros-master/
     environment: *ros-config
-    extra_hosts: *hosts
-    network_mode: host
+    deploy: 
+      placement: 
+        constraints: [node.labels.module == robot]
+    networks:
+      - digital-twin-service
   drivers:
     image: niryo-sim-drivers:latest
-    hostname: niryo-one-drivers
     build: ../../../digital-twin-service/niryo-one-drivers/simulation/
     environment: *ros-config
-    extra_hosts: *hosts
-    network_mode: host
     depends_on:
       - master
-  robot-stack:
-    image: niryo-one-full-stack:latest
-    hostname: niryo-one-stack
-    build: ../../../digital-twin-service/niryo-one-stack/niryo-one-stack/
+    deploy: 
+      placement: 
+        constraints: [node.labels.module == robot]
+    networks:
+      - digital-twin-service 
+  control:
+    image: niryo-one-control:latest
+    build: ../../../digital-twin-service/niryo-one-stack/niryo-one-control/
     environment: *ros-config
-    extra_hosts: *hosts
-    network_mode: host
     depends_on:
       - master
       - drivers
+    deploy: 
+      placement: 
+        constraints: [node.labels.module == control]
+    networks:
+      - digital-twin-service
+  motion:
+    image: niryo-one-motion:latest
+    build: ../../../digital-twin-service/niryo-one-stack/niryo-one-motion/
+    environment: *ros-config
+    depends_on:
+      - master
+      - drivers
+      - control
+    deploy: 
+      placement: 
+        constraints: [node.labels.module == motion]
+    networks:
+      - digital-twin-service
+  interface:
+   image: niryo-one-interface:latest
+   build: ../../../digital-twin-service/niryo-one-stack/niryo-one-interface/
+   environment: *ros-config
+   depends_on:
+     - master
+     - drivers
+     - control
+     - motion
+   deploy: 
+    placement: 
+      constraints: [node.labels.module == interface]
+   networks:
+     - digital-twin-service
   dtwin:
     image: niryo-one-dtwin:latest
-    hostname: niryo-one-dtwin
     build: ../../../digital-twin-service/digital-replica/
     environment: *ros-config
-    extra_hosts: *hosts
-    network_mode: host
     depends_on:
       - master
       - drivers
-      - robot-stack
+      - control
+      - motion
+      - interface
+    ports:
+      - "6901:6901"
+    deploy: 
+      placement: 
+        constraints: [node.labels.module == app]
+    networks: 
+      - digital-twin-service
   web:
     image: niryo-one-web:latest
-    hostname: niryo-one-web
     build: ../../../digital-twin-service/web-interface/
     environment: *ros-config
-    extra_hosts: *hosts
-    network_mode: host
     depends_on:
       - master
       - drivers
-      - robot-stack
-# zenoh-router:
-#    image:
-#    name:
-#    ports:
-#      - 7447:7447/tcp
-#      - 7447:7447/udp
-#      - 8000:8000/tcp
-#    network: 169.254.210.7
-#  replay:
-#    image:
-#    build:
-#    env_file:
-#      - replay.env
-#    ports:
-#     - 5000:5000
-#    extra_hosts: *hosts
+      - control
+      - motion
+      - interface
+      - dtwin
+    ports:
+      - "8080:8080"
+    deploy: 
+      placement: 
+        constraints: [node.labels.module == app]
+    networks:
+      - digital-twin-service 
+  zenoh:
+    image: eclipse/zenoh:0.5.0-beta.5
+    ports:
+      - 7447:7447
+      - 7447:7447/udp
+      - 8000:8000/tcp
+    deploy:
+      placement:
+        constraints: [node.labels.module == app]
+    environment: 
+      - RUST_LOG=debug
+    networks:
+     - digital-twin-service
+  replay:
+    image: zenoh-replay:latest
+    environment:
+      - ZENOH_ROUTER_ADDRESS=tcp/zenoh:7447
+      - ROS_MASTER_URI=http://master:11311
+    ports:
+      - 5000:5000
+    deploy:
+      placement:
+        constraints: [node.labels.module == app]
+    depends_on:
+      - dtwin
+    networks:
+      - digital-twin-service

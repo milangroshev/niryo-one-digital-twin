@@ -1,18 +1,13 @@
 version: "3.8"
 networks:
   digital-twin-service:
-      # ipam: 
-      #    driver: overlay
 x-ros-config: &ros-config
     - ROS_MASTER_URI=http://master:11311
 services:
   master:
     image: niryo-ros-master:latest
-    # hostname: niryo-one-master
     build: ../../../digital-twin-service/ros-master/
     environment: *ros-config
-    # extra_hosts: *hosts
-   # network_mode: host
     deploy: 
       placement: 
         constraints: [node.labels.module == robot]
@@ -20,11 +15,8 @@ services:
       - digital-twin-service
   drivers:
     image: niryo-sim-drivers:latest
-    # hostname: niryo-one-drivers
     build: ../../../digital-twin-service/niryo-one-drivers/simulation/
     environment: *ros-config
-    # extra_hosts: *hosts
-    # network_mode: host
     depends_on:
       - master
     deploy: 
@@ -34,11 +26,8 @@ services:
       - digital-twin-service 
   control:
     image: niryo-one-control:latest
-    # hostname: niryo-one-control
     build: ../../../digital-twin-service/niryo-one-stack/niryo-one-control/
     environment: *ros-config
-    # extra_hosts: *hosts
-    # network_mode: host
     depends_on:
       - master
       - drivers
@@ -49,11 +38,8 @@ services:
       - digital-twin-service
   motion:
     image: niryo-one-motion:latest
-    # hostname: niryo-one-motion
     build: ../../../digital-twin-service/niryo-one-stack/niryo-one-motion/
     environment: *ros-config
-    # extra_hosts: *hosts
-    # network_mode: host
     depends_on:
       - master
       - drivers
@@ -65,11 +51,8 @@ services:
       - digital-twin-service
   interface:
    image: niryo-one-interface:latest
-   # hostname: niryo-one-motion
    build: ../../../digital-twin-service/niryo-one-stack/niryo-one-interface/
    environment: *ros-config
-   # extra_hosts: *hosts
-   # network_mode: host
    depends_on:
      - master
      - drivers
@@ -82,11 +65,8 @@ services:
      - digital-twin-service
   dtwin:
     image: niryo-one-dtwin:latest
-    # hostname: niryo-one-dtwin
     build: ../../../digital-twin-service/digital-replica/
     environment: *ros-config
-    # extra_hosts: *hosts
-    # network_mode: host
     depends_on:
       - master
       - drivers
@@ -102,11 +82,8 @@ services:
       - digital-twin-service
   web:
     image: niryo-one-web:latest
-    # hostname: niryo-one-web
     build: ../../../digital-twin-service/web-interface/
     environment: *ros-config
-    # extra_hosts: *hosts
-    # network_mode: host
     depends_on:
       - master
       - drivers
@@ -121,19 +98,28 @@ services:
         constraints: [node.labels.module == app]
     networks:
       - digital-twin-service 
-# zenoh-router:
-#    image:
-#    name:
-#    ports:
-#      - 7447:7447/tcp
-#      - 7447:7447/udp
-#      - 8000:8000/tcp
-#    network: 169.254.210.7
-#  replay:
-#    image:
-#    build:
-#    env_file:
-#      - replay.env
-#    ports:
-#     - 5000:5000
-#    extra_hosts: *hosts
+  zenoh:
+    image: eclipse/zenoh:0.5.0-beta.5
+    ports:
+      - 7447:7447
+      - 7447:7447/udp
+      - 8000:8000/tcp
+    placement:
+      constraints: [node.labels.module == app]
+    environment: 
+      - RUST_LOG=debug
+    networks:
+     - digital-twin-service
+  replay:
+    image: zenoh-replay:latest
+    environment:
+      - ZENOH_ROUTER_ADDRESS=tcp/zenoh:7447
+      - ROS_MASTER_URI=http://master:11311
+    ports:
+      - 5000:5000
+    placement:
+      constraints: [node.labels.module == app]
+    depends_on:
+      - dtwin
+    networks:
+      - digital-twin-service

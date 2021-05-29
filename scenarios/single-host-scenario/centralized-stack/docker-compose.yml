@@ -1,77 +1,80 @@
 version: "3.8"
 networks:
   digital-twin-service:
-    driver: bridge
-x-hosts: &hosts
-    - niryo-one-master:127.0.0.1
-    - niryo-one-drivers:127.0.0.1
-    - niryo-one-stack:127.0.0.1
-    - niryo-one-dtwin:127.0.0.1
-    - niryo-one-web:127.0.0.1
 x-ros-config: &ros-config
-    - ROS_MASTER_URI=http://127.0.0.1:11311
+    - ROS_MASTER_URI=http://master:11311
 services:
   master:
     image: niryo-ros-master:latest
-    hostname: niryo-one-master
     build: ../../../digital-twin-service/ros-master/
     environment: *ros-config
-    extra_hosts: *hosts
-    network_mode: host
+    networks:
+     - digital-twin-service
   drivers:
     image: niryo-sim-drivers:latest
-    hostname: niryo-one-drivers
     build: ../../../digital-twin-service/niryo-one-drivers/simulation/
     environment: *ros-config
-    extra_hosts: *hosts
-    network_mode: host
     depends_on:
       - master
+    networks:
+      - digital-twin-service
   robot-stack:
     image: niryo-one-full-stack:latest
-    hostname: niryo-one-stack
     build: ../../../digital-twin-service/niryo-one-stack/niryo-one-stack/
     environment: *ros-config
-    extra_hosts: *hosts
-    network_mode: host
     depends_on:
       - master
       - drivers
+    networks: 
+     - digital-twin-service
   dtwin:
     image: niryo-one-dtwin:latest
-    hostname: niryo-one-dtwin
     build: ../../../digital-twin-service/digital-replica/
     environment: *ros-config
-    extra_hosts: *hosts
-    network_mode: host
     depends_on:
       - master
       - drivers
       - robot-stack
+    networks:
+      - digital-twin-service
   web:
     image: niryo-one-web:latest
-    hostname: niryo-one-web
     build: ../../../digital-twin-service/web-interface/
     environment: *ros-config
-    extra_hosts: *hosts
-    network_mode: host
     depends_on:
       - master
       - drivers
       - robot-stack
-# zenoh-router:
-#    image:
-#    name:
-#    ports:
-#      - 7447:7447/tcp
-#      - 7447:7447/udp
-#      - 8000:8000/tcp
-#    network: 169.254.210.7
-#  replay:
-#    image:
-#    build:
-#    env_file:
-#      - replay.env
-#    ports:
-#     - 5000:5000
-#    extra_hosts: *hosts
+    networks:
+     - digital-twin-service
+  zenoh:
+    image: eclipse/zenoh:0.5.0-beta.5
+    ports:
+      - 7447:7447
+      - 7447:7447/udp
+      - 8000:8000/tcp
+    environment: 
+      - RUST_LOG=debug
+    networks:
+     - digital-twin-service
+  replay:
+    image: zenoh-replay:latest
+    build: ../../../digital-twin-service/replay-feature/
+    environment:
+      - ZENOH_ROUTER_ADDRESS=tcp/zenoh:7447
+      - ROS_MASTER_URI=http://master:11311
+      - REPLICA_ROS_TOPIC=/robot2/coppeliaSIM/NiryoOne/joint_states
+      - REPLICA_HZ=15
+      - REPLAY_DURATION=25  
+    ports:
+      - 5000:5000
+    depends_on:
+      - dtwin
+    networks:
+      - digital-twin-service
+  test:
+    image: ubuntu:latest
+    command: sleep infinity
+    networks:
+      - digital-twin-service
+

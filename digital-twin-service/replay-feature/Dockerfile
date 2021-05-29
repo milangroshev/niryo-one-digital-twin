@@ -19,6 +19,5 @@ ENV REPLAY_DURATION 25
 
 CMD echo $ZENOH_ROUTER_ADDRESS
 CMD ./runner.sh
-CMD sleep infinity
 # CMD python3 pub-robot-data.py $ZENOH_ROUTER_ADDRESS $DIGITAL_TWIN_ROS_TOPIC &
 # CMD python3 zenoh-replay.py $ZENOH_ROUTER_ADDRESS $REPLICA_ROS_TOPIC 15 
