@@ -112,9 +112,13 @@ services:
      - digital-twin-service
   replay:
     image: zenoh-replay:latest
+    build: ../../../digital-twin-service/replay-feature/
     environment:
       - ZENOH_ROUTER_ADDRESS=tcp/zenoh:7447
       - ROS_MASTER_URI=http://master:11311
+      - REPLICA_ROS_TOPIC=/robot2/coppeliaSIM/NiryoOne/joint_states
+      - REPLICA_HZ=15
+      - REPLAY_DURATION=25  
     ports:
       - 5000:5000
     placement:
@@ -123,3 +127,5 @@ services:
       - dtwin
     networks:
       - digital-twin-service
+  test:
+
