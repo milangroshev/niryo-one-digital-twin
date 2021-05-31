@@ -12,10 +12,12 @@ Run the containers specifying the following settings (environment variables spec
 - REPLICA_HZ: the frequency/speed at which the robot replica will replay
 - REPLAY_DURATION: duration of the replay sequence in seconds
 
-### Dependencies:
+### Dependencies
 - The Digital Twin Replay features depends on:
    - Digital Twin app (and related dependencies)
    - Zenoh router (v0.5.0-beta.5) 
+
+
 Make sure these dependencies are up and running before running the container.
 Use docker-compose to run it.  
 
