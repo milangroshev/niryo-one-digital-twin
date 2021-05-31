@@ -14,7 +14,7 @@ The docker compose builds and runs the Niryo One Digital Twin service for you. T
 - `sudo docker-compose up`
 - note: It will take some time to build the images because we have to assemble a ROS melodic image, install the Niryo One dependencies and install the Niryo One ROS for each of the modules that compose the service
 
-Aditional docker-compose usefull commands:
+Additional docker-compose useful commands:
 - `sudo docker-compose build` : re-builds all the containers
 - `sudo docker-compose up -d` : runs the service in detached mode
 - `sudo docker-compose down` : brings the service down
@@ -23,9 +23,12 @@ Aditional docker-compose usefull commands:
 ## How to use it?
 
 Once the service is deployed you will have access to two different GUI.
+Docker-compose will setup a network and assign an arbitrary IP to each container/service.
+You can inspect the network and find out about the IPs with this command:
+`sudo docker network inspect centralized-stack_digital-twin-service`
 
 ### Digital replica GUI:
-- Open your browser and navigate to `<host_machine_ip_address>:6901`
+- Open your browser and navigate to `<dtwin_service_ip_address>:6901`
 - Insert as password: `netcom;`
 - Once the GUI is available double click the desktop script `run_coppelia.sh`
 - This will open CoppeliaSim. Once you are inside:
@@ -34,7 +37,7 @@ Once the service is deployed you will have access to two different GUI.
 - You should see the Niryo One digital Replica going in down
 
 ### Web interface:
-- Open your browser and navigate to `<host_machine_ip_address>:8080`
+- Open your browser and navigate to `<web_service_ip_address>:8080`
 - Once the GUI is available you need to:
     - Click the `Connect` button in order to connected the GUI to the robot. If the connection is sucessfull you should be able to see `Connection Status: OPEN`.
     - Click the `Manual` Calibration buttion to get the robot in operational state. 
