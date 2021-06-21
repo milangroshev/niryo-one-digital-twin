@@ -1,7 +1,7 @@
 FROM ros:noetic
 
 RUN apt-get -y update && apt-get -y install python3-pip python3-rospy
-RUN pip3 install eclipse-zenoh==0.5.0-b5 flask
+RUN pip3 install eclipse-zenoh==0.5.0-b5 Flask==1.1.2
 RUN echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
 RUN /bin/bash -c "source ~/.bashrc"
 

@@ -56,7 +56,9 @@ services:
     depends_on:
       - master
       - drivers
-      - robot-stack
+      - motion
+      - control
+      - interface
     networks:
       - digital-twin-service
   web:
@@ -66,7 +68,9 @@ services:
     depends_on:
       - master
       - drivers
-      - robot-stack
+      - motion
+      - control
+      - interface
     networks:
      - digital-twin-service
   zenoh:
@@ -85,7 +89,7 @@ services:
     environment:
       - ZENOH_ROUTER_ADDRESS=tcp/zenoh:7447
       - ROS_MASTER_URI=http://master:11311
-      - REPLICA_ROS_TOPIC=/robot2/coppeliaSIM/NiryoOne/joint_states
+      - REPLICA_ROS_TOPIC= /replay/joint_states #/robot2/coppeliaSIM/NiryoOne/joint_states
       - REPLICA_HZ=15
       - REPLAY_DURATION=25  
     ports:

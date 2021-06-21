@@ -55,10 +55,10 @@ async def wshandle(request):
     
 #        if executing_command == False:
         if str_split[0] == "start-replay":
-          requests.post("http://zenoh-replay:5000/lastminute", timeout=1)
+          requests.post("http://replay:5000/lastminute", timeout=1)
 
         elif str_split[0] == "stop-replay":
-          requests.delete("http://zenoh-replay:5000/lastminute", timeout=1)
+          requests.delete("http://replay:5000/lastminute", timeout=1)
 
         elif str_split[0] == "control" or str_split[0] == "moveit" or str_split[0] == "interface" or str_split[0] == "calibration" or str_split[0] == "joystick":
 #          executing_command = True

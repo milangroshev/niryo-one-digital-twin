@@ -8,6 +8,8 @@ services:
     image: niryo-ros-master:latest
     build: ../../../digital-twin-service/ros-master/
     environment: *ros-config
+    ports:
+     - 11311:11311
     networks:
      - digital-twin-service
   drivers:
@@ -35,6 +37,8 @@ services:
       - master
       - drivers
       - robot-stack
+    ports:
+      - 19999:19999
     networks:
       - digital-twin-service
   web:
@@ -63,7 +67,7 @@ services:
     environment:
       - ZENOH_ROUTER_ADDRESS=tcp/zenoh:7447
       - ROS_MASTER_URI=http://master:11311
-      - REPLICA_ROS_TOPIC=/robot2/coppeliaSIM/NiryoOne/joint_states
+      - REPLICA_ROS_TOPIC= /replay/joint_states 
       - REPLICA_HZ=15
       - REPLAY_DURATION=25  
     ports:
