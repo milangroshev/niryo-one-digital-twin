@@ -23,7 +23,7 @@ from aiohttp import web
 
 IP = '127.0.0.1'
 PORT = 5005
-
+loss="0"
 #executing_command = False
 #
 #def exec_ros_cmd_status():
@@ -42,6 +42,7 @@ async def http_handler(request):
 
 async def wshandle(request):
 #  global executing_command
+  global loss
 
   ws = web.WebSocketResponse()
 
@@ -59,6 +60,18 @@ async def wshandle(request):
 
         elif str_split[0] == "stop-replay":
           requests.delete("http://replay:5000/lastminute", timeout=1)
+
+        elif str_split[0] == "start-remote":
+          print("start-remote")
+          requests.post("http://niryo-one-interface:9999/start", json={"loss_rate":loss}, timeout=1)
+        
+        elif str_split[0] == "stop-remote":
+          print("stop-remote")
+          requests.post("http://niryo-one-interface:9999/stop", json={"loss_rate":loss},timeout=1)
+   
+        elif str_split[0] == "joystick":
+          print("pkt-loss presssed")
+          print(message.data.encode())
 
         elif str_split[0] == "control" or str_split[0] == "moveit" or str_split[0] == "interface" or str_split[0] == "calibration" or str_split[0] == "joystick":
 #          executing_command = True

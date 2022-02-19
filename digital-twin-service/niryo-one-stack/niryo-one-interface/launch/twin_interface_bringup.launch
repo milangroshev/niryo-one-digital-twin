@@ -43,7 +43,8 @@
         <param name="sequence_autorun_status_file" type="string" value="/home/niryo/niryo_one_saved_values/sequence_autorun_status.txt" unless="$(arg simulation_mode)"/>
         <param name="sequence_autorun_status_file" type="string" value="~/sequence_autorun_status.txt" if="$(arg simulation_mode)"/>
     </node>
-
+ <!-- Launch remote control web server -->
+ <node pkg="niryo_one_bringup" name="remote_controler" type="remote-controler-gripper-web.py" output="screen"/>
  <!-- node name="rviz" pkg="rviz" type="rviz" args="-d $(find niryo_one_description)/config/default_config.rviz" / -->
 
 </launch>

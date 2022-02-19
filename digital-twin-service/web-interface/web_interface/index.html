@@ -662,6 +662,24 @@
 	first = true;
       }
 
+      function start_remote()
+      {
+        if(ws != null && ws.readyState == 1)
+        {
+          ws.send("start-remote\r\n");
+          alert("Remote controller launched!");
+        }
+      }
+
+      function stop_remote()
+      {
+        if(ws != null && ws.readyState == 1)
+        {
+          ws.send("stop-remote\r\n");
+          alert("Remote controller terminated!");
+        }
+      }
+
       function start_replay()
       {
 	if(ws != null && ws.readyState == 1)
@@ -687,6 +705,18 @@
           ws.send("calibration" + "," + mode + "\r\n");
 	  if(mode == 2)
 	  alert("Calibration Done!");
+        }
+      }
+      function enable_loss(obj)
+      {
+        if(ws != null && ws.readyState == 1)
+        {
+          val = 0;
+          if(obj.checked == true) {
+            val = 1;
+          }
+
+          ws.send("pkt-loss" + "," + val + "\r\n");
         }
       }
 
@@ -813,7 +843,19 @@
 	<button class="btn btn-sm btn-danger" onclick="calibration(0)">Stop</button>
      
         </br>
+        </br>
+
+                <label> Remote Control : </label>
+           <button class="btn btn-sm btn-primary" onclick="start_remote()">Start</button>
+        <button class="btn btn-sm btn-danger" onclick="stop_remote()">Stop</button>
+        </br>
 		</br>
+        <!-- Default switch -->
+        <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="customSwitches" onclick="enable_loss(this)">
+        <label class="custom-control-label" for="customSwitches">Turn on command loss</label>
+        </div>
+         </br>
         <label>Enable Joystick</label>
 	<label>
 	  <input type="checkbox" onclick="enable_joystick(this)">

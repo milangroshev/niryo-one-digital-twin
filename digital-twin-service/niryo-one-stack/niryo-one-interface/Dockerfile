@@ -15,7 +15,7 @@ RUN \
     ros-melodic-moveit ros-melodic-rosbridge-suite ros-melodic-joy \
     ros-melodic-ros-control ros-melodic-ros-controllers \
     ros-melodic-tf2-web-republisher ros-melodic-joint-state-publisher-gui &&\
-  pip install jsonpickle && \
+  pip install jsonpickle numpy flask && \
   rm -rf /var/lib/apt/lists/*
 
 USER niryo
@@ -31,7 +31,8 @@ COPY scripts/joystick_interface.py catkin_ws/src/niryo_one_user_interface/script
 
 RUN mkdir -p /home/niryo/scripts
 COPY scripts/wait-for-ros-nodes.sh /home/niryo/scripts/
-
+COPY scripts/remote-controler-gripper-web.py /home/niryo/catkin_ws/src/niryo_one_bringup/scripts/
+COPY scripts/milan-4-cubes-10.csv /home/niryo/catkin_ws/src/niryo_one_bringup/scripts/
 
 RUN cd catkin_ws && bash -c "source /opt/ros/melodic/setup.bash && catkin_make"
 
