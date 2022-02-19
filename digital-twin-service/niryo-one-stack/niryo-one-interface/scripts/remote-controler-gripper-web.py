@@ -28,6 +28,7 @@ from trajectory_msgs.msg import JointTrajectory
 from trajectory_msgs.msg import JointTrajectoryPoint
 from niryo_one_python_api.niryo_one_api import *
 from sensor_msgs.msg import Joy
+from std_msgs.msg import Bool
 from collections import deque
 from flask import Flask, jsonify, request
 from threading import Thread
@@ -44,6 +45,8 @@ rospy.init_node('niryo_one_keystick')
 #pub = rospy.Publisher('/foreco/controller/command', JointTrajectory, queue_size=1, tcp_nodelay=True)
 
 pub = rospy.Publisher('/niryo_one_follow_joint_trajectory_controller/command', JointTrajectory, queue_size=1, tcp_nodelay=True)
+
+pub_enable_predictions=rospy.Publisher('/enable_predictions', Bool, queue_size=1, tcp_nodelay=True)
 
 joy_pub = rospy.Publisher('/joy', Joy, queue_size=1, tcp_nodelay=True)
 
@@ -74,7 +77,6 @@ def start_post():
   data = request.json
   loss_rate = data['loss_rate']
   loss=int(loss_rate)
-  print ("STARTTTTTTTT")
   seq=0
   start_remote_control = True
   thread = Thread(target = run_remote_control)
@@ -95,9 +97,21 @@ def stop_post():
   global start_remote_control, thread
   start_remote_control = False
   thread.join()
-  print("thread finished...exiting")
   return jsonify({'success': True}), 200
 
+@app.route("/prediction/", methods=['POST'])
+def prediction_post():
+  global pub_enable_predictions 
+  msg=Bool()
+  msg.data=True
+  data = request.json
+  if(data['prediction']=="1"):
+      msg.data=True
+      pub_enable_predictions.publish(msg)
+  else:
+      msg.data=False
+      pub_enable_predictions.publish(msg)
+  return jsonify({'success': True}), 200
 
 def move_to_position(pos, cmd_speed=0.15):
   global freq_decrease,seq

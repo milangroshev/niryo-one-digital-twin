@@ -8,4 +8,6 @@
         <arg name="simulation_mode" value="true" />
     </include>
 
+    <node pkg="niryo_one_bringup" name="predictions_consumer" type="consumer-final.py" output="screen"/>
+
 </launch>

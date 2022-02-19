@@ -62,16 +62,24 @@ async def wshandle(request):
           requests.delete("http://replay:5000/lastminute", timeout=1)
 
         elif str_split[0] == "start-remote":
-          print("start-remote")
           requests.post("http://niryo-one-interface:9999/start", json={"loss_rate":loss}, timeout=1)
         
         elif str_split[0] == "stop-remote":
-          print("stop-remote")
           requests.post("http://niryo-one-interface:9999/stop", json={"loss_rate":loss},timeout=1)
    
-        elif str_split[0] == "joystick":
-          print("pkt-loss presssed")
-          print(message.data.encode())
+        elif str_split[0] == "pkt-loss":
+          if(str_split[1]=="0"):
+              loss="0"
+              requests.post("http://niryo-one-interface:9999/update", json={"loss_rate":loss},timeout=1)
+          else:
+              loss="40"
+              requests.post("http://niryo-one-interface:9999/update", json={"loss_rate":loss},timeout=1)
+
+        elif str_split[0] == "start-predictions":
+          requests.post("http://niryo-one-interface:9999/prediction", json={"prediction":"1"},timeout=1)
+
+        elif str_split[0] == "stop-predictions":
+          requests.post("http://niryo-one-interface:9999/prediction", json={"prediction":"0"},timeout=1)
 
         elif str_split[0] == "control" or str_split[0] == "moveit" or str_split[0] == "interface" or str_split[0] == "calibration" or str_split[0] == "joystick":
 #          executing_command = True

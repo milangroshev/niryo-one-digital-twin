@@ -720,6 +720,22 @@
         }
       }
 
+      function start_predictions()
+      {
+        if(ws != null && ws.readyState == 1)
+        {
+          ws.send("start-predictions\r\n");
+        }
+      }
+
+      function stop_predictions()
+      {
+        if(ws != null && ws.readyState == 1)
+        {
+          ws.send("stop-predictions\r\n");
+        }
+      }
+
       function enable_joystick(obj)
       {
         if(ws != null && ws.readyState == 1)
@@ -854,6 +870,8 @@
         <div class="custom-control custom-switch">
         <input type="checkbox" class="custom-control-input" id="customSwitches" onclick="enable_loss(this)">
         <label class="custom-control-label" for="customSwitches">Turn on command loss</label>
+        <button class="btn btn-sm btn-primary" onclick="start_predictions()">Enable predictions</button>
+        <button class="btn btn-sm btn-danger"  onclick="stop_predictions()">Disable predictions</button>
         </div>
          </br>
         <label>Enable Joystick</label>

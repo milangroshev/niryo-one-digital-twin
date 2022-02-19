@@ -7,24 +7,22 @@ echo 'Remember that you need to list and add your xauth keys into the Dockerfile
 #ROS_IP="169.254.210.1"
 
 sudo docker run \
-                --hostname niryo-one-master \
-                -it \
-                --name master \
-                --rm \
-                --net host \
-                -e ROS_MASTER_URI="http://10.5.4.101:11311" \
-                --add-host sim-robot:10.5.4.101 \
-                --add-host niryo-one-master:10.5.4.101 \
-                --add-host niryo-sim-drivers:10.5.4.101 \
-                --add-host niryo-one-web:10.5.4.101 \
-                --add-host niryo-one-control:10.5.4.101 \
-                --add-host niryo-one-motion:10.5.4.101 \
-                --add-host niryo-one-interface:10.5.4.101 \
-                --add-host niryo-one-dtwin:10.5.4.101 \
-                --add-host niryo-one-stack:10.5.4.101 \
-                --add-host niryo-desktop:10.5.4.60 \
-                --add-host movement-prediction:10.5.4.16 \
-                10.9.8.105:5000/niryo-ros-master:2.0.0
+                --hostname niryo-sim-drivers \
+		-it \
+		--name sim-drivers \
+		--rm \
+		--net host \
+		-e ROS_MASTER_URI="http://10.5.4.101:11311" \
+		--add-host sim-robot:10.5.4.101 \
+		--add-host niryo-one-master:10.5.4.101 \
+		--add-host niryo-sim-drivers:10.5.4.101 \
+		--add-host niryo-one-web:10.5.4.101 \
+		--add-host niryo-one-control:10.5.4.101 \
+		--add-host niryo-one-motion:10.5.4.101 \
+		--add-host niryo-one-interface:10.5.4.101 \
+		--add-host niryo-one-dtwin:10.5.4.101 \
+		--add-host niryo-one-stack:127.0.0.1 \
+		niryo-sim-drivers:latest
 
 # Networking settings phisical robot
 #sudo docker run \

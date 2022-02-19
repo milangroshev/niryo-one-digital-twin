@@ -14,7 +14,7 @@ RUN \
     ros-melodic-moveit ros-melodic-rosbridge-suite ros-melodic-joy \
     ros-melodic-ros-control ros-melodic-ros-controllers \
     ros-melodic-tf2-web-republisher ros-melodic-joint-state-publisher-gui &&\
-  pip install jsonpickle && \
+  pip install jsonpickle requests && \
   rm -rf /var/lib/apt/lists/*
 
 USER niryo
@@ -25,6 +25,11 @@ RUN rosdep update && \
     git clone https://github.com/NiryoRobotics/niryo_one_ros.git .
 
 COPY launch/* catkin_ws/src/niryo_one_bringup/launch/
+COPY scripts/ /home/niryo/catkin_ws/src/niryo_one_bringup/scripts/
+
+USER root
+RUN chmod +x /home/niryo/catkin_ws/src/niryo_one_bringup/scripts/consumer-final.py
+USER niryo
 
 RUN cd catkin_ws && bash -c "source /opt/ros/melodic/setup.bash && catkin_make"
 
