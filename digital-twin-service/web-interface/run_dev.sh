@@ -24,4 +24,4 @@ sudo docker run \
        --add-host niryo-one-dtwin:10.5.4.101 \
        --add-host niryo-one-stack:10.5.4.101 \
        --add-host niryo-desktop:10.5.4.60 \
-       niryo-one-web:latest
+       10.9.8.105:5000/niryo-one-web:4.0.0

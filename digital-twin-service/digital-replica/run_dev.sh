@@ -27,7 +27,7 @@ sudo docker run \
 		--add-host niryo-one-stack:10.5.4.101 \
                 --add-host niryo-desktop:10.5.4.60 \
                 --add-host movement-prediction:10.5.4.16 \
-		niryo-one-dtwin:latest
+		10.9.8.105:5000/niryo-one-dtwin:4.0.0
 
 # Networking settings phisical robot
 #sudo docker run \

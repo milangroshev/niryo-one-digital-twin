@@ -13,6 +13,7 @@ sudo docker run \
 		--rm \
 		--net host \
 		-e ROS_MASTER_URI="http://10.5.4.101:11311" \
+                -e MONITORING="True" \
 		--add-host sim-robot:10.5.98.5 \
                 --add-host niryo-one-master:10.5.4.101 \
                 --add-host niryo-sim-drivers:10.5.4.101 \

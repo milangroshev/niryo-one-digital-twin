@@ -32,6 +32,8 @@ from std_msgs.msg import Bool
 from collections import deque
 from flask import Flask, jsonify, request
 from threading import Thread
+from influxdb import InfluxDBClient
+from os import environ
 
 WEBSERVER_IP='0.0.0.0'
 WEBSERVER_PORT= 9999
@@ -49,6 +51,11 @@ pub = rospy.Publisher('/niryo_one_follow_joint_trajectory_controller/command', J
 pub_enable_predictions=rospy.Publisher('/enable_predictions', Bool, queue_size=1, tcp_nodelay=True)
 
 joy_pub = rospy.Publisher('/joy', Joy, queue_size=1, tcp_nodelay=True)
+
+influx_client = InfluxDBClient('10.5.4.21')
+
+
+monitoring = True if environ.get("MONITORING", "false").lower() == "true" else False
 
 consecutive = 0
 loss = 0
@@ -153,7 +160,7 @@ def fill_stable_queue(position):
             cmd_stable.append(difference)
 
 def run_remote_control():
-  global gripper_state, consecutive, loss, joy_pub, pub, n, last_command, seq, freq_decrease, cmd_stable, start_remote_control
+  global gripper_state, consecutive, loss, joy_pub, pub, n, last_command, seq, freq_decrease, cmd_stable, start_remote_control, monitoring, influx_client
   random.seed(3)
   dis=0
   dataset='/home/niryo/catkin_ws/src/niryo_one_bringup/scripts/milan-4-cubes-10.csv'
@@ -193,6 +200,25 @@ def run_remote_control():
       if randrange(100) > loss:
         if valid%freq_decrease==0:
           move_to_position(pos)
+          if monitoring:
+            json_body = [
+            {                      
+              "measurement": "robot_joints",
+              "tags": 
+              {
+                "predictions": "False" # TODO tags?
+              },
+              "fields": 
+              {
+                "joint_1": pos[0],
+                "joint_2": pos[1],
+                "joint_3": pos[2] 
+              }
+            }]
+            try:
+              influx_client.write_points(json_body)      
+            except Exception as e:
+              print(e)
           #print("moving")
           #print(pos)
         time.sleep(0.15)
