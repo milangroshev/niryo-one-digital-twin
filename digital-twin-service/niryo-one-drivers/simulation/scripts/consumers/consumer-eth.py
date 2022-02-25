@@ -25,16 +25,19 @@ import json
 import requests
 from sensor_msgs.msg import Joy
 from std_msgs.msg import Bool
-
 class Predictor:
   def __init__(self):
     self.session = requests.Session()
 
   def predict(self, input_data):
     url = 'http://10.5.4.21:5000/predict'
+    now=rospy.Time.now()
     rsp = self.session.post(url, data = json.dumps({"data": input_data}), headers = {'Content-Type': 'application/json'})
+    after=rospy.Time.now()
+    print((now - after).to_nsec()/float(1000000))
     forecast = rsp.json()
-    print(str(datetime.datetime.now()) + ": " + str(forecast) + ": forecasted answer")
+    msg = str(datetime.datetime.now()) + ": " + str(forecast) + ": forecasted answer"
+    rospy.loginfo(msg)
     return [forecast[0][0], forecast[0][1], forecast[0][2], forecast[0][3], forecast[0][4], forecast[0][5]]
 
   def update(self, input_data,timestamp):
@@ -93,50 +96,45 @@ class AIAgent:
 
   def callback_predict(self):
     if(self.gripper_state != self.gripper_last_state):
-      print("GRIPPER STATE CHANGEEEEE")
       self.timer.cancel()
-      self.timer = Timer(2,self.callback_predict)
+      self.timer = Timer(5,self.callback_predict)
       self.timer.start()
       self.gripper_last_state=self.gripper_state
       return
-    print("executing prediction: " + str(self.pred))
+    msg = "executing prediction: " + str(self.pred)
+    rospy.loginfo(msg)
     self.pred+=1
     now = rospy.Time.now()
     self.prediction = self.predictor.predict([[0,0,0,0,0,0,now.secs * 1000000000 + now.nsecs,True]])
     self.move_to_position(self.prediction)
 
   def callback_command_received(self, joint_trajectory):
+    #now = rospy.Time.now()
+    #if((now - joint_trajectory.header.stamp).to_nsec()/float(1000000) > 20.00):
+      #print((now - joint_trajectory.header.stamp).to_nsec()/float(1000000))
+    #self.old = now
     if(self.enable_predictions==True):
       now = rospy.Time.now()
       cmd_stamp=joint_trajectory.header.stamp
       #print((now-self.old).to_nsec()/float(1000000))
-      print(str(datetime.datetime.now()) + ": " + str(joint_trajectory.points[0].positions)+": "+str(joint_trajectory.header.seq))   
+      msg = str(datetime.datetime.now()) + ": " + str(joint_trajectory.points[0].positions)+": "+str(joint_trajectory.header.seq)
+      rospy.loginfo(msg)
+      #print(str(datetime.datetime.now()) + ": " + str(joint_trajectory.points[0].positions)+": "+str(joint_trajectory.header.seq))   
       self.old = now
       #print("command arrived")
       #print((now - joint_trajectory.header.stamp).to_nsec()/float(1000000))
-      if (joint_trajectory.header.seq == 1):
-          if self.timer != None:
-              self.timer.cancel()
-          #print(joint_trajectory.points[0].time_from_start.to_nsec()/float(1000000000)+0.01)
-          self.timer = Timer(joint_trajectory.points[0].time_from_start.to_nsec()/float(1000000000) + 0.001,self.callback_predict)
-          self.timer.start()
-          r = self.predictor.update(joint_trajectory.points[0].positions,now)
-          return
-
       if (joint_trajectory._connection_header['callerid']=='niryo_one_movement_prediction_var'):
-          positions = joint_trajectory.points[0].positions
-          self.cmds.append(positions)
-          r = self.predictor.update(joint_trajectory.points[0].positions,now)
-          #self.prediction = self.predictor.predict([elem for elem in self.cmds])
-          return
+        positions = joint_trajectory.points[0].positions
+        self.cmds.append(positions)
+        r = self.predictor.update(joint_trajectory.points[0].positions,now)
+        return
       else:
-          if self.timer != None:
-            self.timer.cancel()
-          self.timer = Timer(joint_trajectory.points[0].time_from_start.to_nsec()/float(1000000000) + 0.002, self.callback_predict)
-          self.timer.start()
-          positions = joint_trajectory.points[0].positions
-          r = self.predictor.update(joint_trajectory.points[0].positions,now)
-          #self.prediction = self.predictor.predict([elem for elem in self.cmds])
+        if self.timer != None:
+          self.timer.cancel()
+        self.timer = Timer(joint_trajectory.points[0].time_from_start.to_nsec()/float(1000000000) + 0.020, self.callback_predict)
+        self.timer.start()
+        r = self.predictor.update(joint_trajectory.points[0].positions,now)
 
 ai = AIAgent()
 rospy.spin()
+

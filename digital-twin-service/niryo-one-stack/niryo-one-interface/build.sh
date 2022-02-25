@@ -5,4 +5,4 @@ echo 'Remember that you need to list and add your xauth keys into the Dockerfile
 XAUTH_KEYS_="$(xauth list $HOSTNAME/unix:0)"
 XSOCK=/tmp/.X11-unix
 XAUTH=/tmp/.docker.xauth
-sudo docker build . -t niryo-one-interface --build-arg "XAUTH_KEYS_=$XAUTH_KEYS_"
+sudo docker build . -t niryo-one-interface-proxy --build-arg "XAUTH_KEYS_=$XAUTH_KEYS_"

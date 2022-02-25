@@ -46,7 +46,7 @@ signal.signal(signal.SIGINT, signal_handler)
 rospy.init_node('niryo_one_keystick')
 #pub = rospy.Publisher('/foreco/controller/command', JointTrajectory, queue_size=1, tcp_nodelay=True)
 
-pub = rospy.Publisher('/niryo_one_follow_joint_trajectory_controller/command', JointTrajectory, queue_size=1, tcp_nodelay=True)
+pub = rospy.Publisher('/proxy_consumer/command', JointTrajectory, queue_size=1, tcp_nodelay=True)
 
 pub_enable_predictions=rospy.Publisher('/enable_predictions', Bool, queue_size=1, tcp_nodelay=True)
 
@@ -71,8 +71,8 @@ start_remote_control=False
 freq_decrease=1
 seq=0
 dis=0
-n = NiryoOne()
-n.change_tool(TOOL_GRIPPER_2_ID)
+#n = NiryoOne()
+#n.change_tool(TOOL_GRIPPER_2_ID)
 last_command=[0.0,0.0,0.0,0.0,0.0,0.0]
 cmd_stable=deque(maxlen=10)
 
@@ -134,7 +134,7 @@ def move_to_position(pos, cmd_speed=0.15):
   point.positions = pos
   point.time_from_start = rospy.Duration(cmd_speed)
   msg.points = [point]
-  #print(str(datetime.datetime.now()) + ": " + str(pos) +": " + str(msg.header.seq))
+  print(str(datetime.datetime.now()) + ": " + str(pos) +": " + str(msg.header.seq))
   pub.publish(msg)
 
 
@@ -184,7 +184,7 @@ def run_remote_control():
               joy_msg=Joy()
               joy_msg.buttons=[0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0]
               joy_pub.publish(joy_msg)
-              n.open_gripper(TOOL_GRIPPER_2_ID, 100)
+              #n.open_gripper(TOOL_GRIPPER_2_ID, 100)
               print("OPENING GRIPPER")
               gripper_state = 1
               time.sleep(2)
@@ -192,7 +192,7 @@ def run_remote_control():
               joy_msg=Joy()
               joy_msg.buttons=[0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
               joy_pub.publish(joy_msg)
-              n.close_gripper(TOOL_GRIPPER_2_ID, 100)
+              #n.close_gripper(TOOL_GRIPPER_2_ID, 100)
               print("CLOSING GRIPPER")
               gripper_state = 2
               time.sleep(2)
